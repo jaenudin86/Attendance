@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">AttendanceApp</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <array name="listview_main_facilitator">
+        <item>Start taking attendance now</item>
+        <item>View reports</item>
+        <item>My courses</item>
+        <item>My time-table</item>
+        <item>Manage holidays</item>
+    </array>
+    <string name="title_activity_holiday_view">HolidayView</string>
+</resources>
