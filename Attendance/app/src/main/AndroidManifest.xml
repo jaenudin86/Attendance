@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="att.attendanceapp" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,6 +21,14 @@
         <activity
             android:name=".HolidayView"
             android:label="@string/title_activity_holiday_view" >
+        </activity>
+        <activity
+            android:name=".AddCourse"
+            android:label="@string/title_activity_add_course" >
+        </activity>
+        <activity
+            android:name=".ManageCourses"
+            android:label="@string/title_activity_manage_courses" >
         </activity>
     </application>
 

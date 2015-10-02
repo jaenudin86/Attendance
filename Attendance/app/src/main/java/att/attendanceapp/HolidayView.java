@@ -1,86 +1,131 @@
 package att.attendanceapp;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.support.v7.app.AppCompatActivity;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Toast;
 
-public class HolidayView extends AppCompatActivity
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
+public class HolidayView extends ActivityBaseClass
 {
-    static final int DATE_DIALOG_ID = 999;
+    EditText holidayFromDate, holidayToDate;
+    EditText holidayName;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_holiday_view);
+        holidayFromDate = (EditText) findViewById(R.id.etHolidayFromDate);
+        holidayToDate = (EditText) findViewById(R.id.etHolidayToDate);
+        holidayName =(EditText)findViewById(R.id.etHolidayName);
     }
+    Calendar fromDateCalendar = Calendar.getInstance();
+    Calendar toDateCalendar = Calendar.getInstance();
     public void setFromDate(View view)
     {
-        showDialog(DATE_DIALOG_ID);
+        new DatePickerDialog(this, fromDateDialog, fromDateCalendar.get(Calendar.YEAR), fromDateCalendar.get(Calendar.MONTH),
+                fromDateCalendar.get(Calendar.DAY_OF_MONTH)).show();
     }
+
     public void setToDate(View view)
     {
-        showDialog(DATE_DIALOG_ID);
-    }
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-            case DATE_DIALOG_ID:
-                // set date picker as current date
-                return new DatePickerDialog(this, datePickerListener,
-                        year, month,day);
-        }
-        return null;
+        new DatePickerDialog(this, toDateDialog, toDateCalendar.get(Calendar.YEAR), toDateCalendar.get(Calendar.MONTH),
+                toDateCalendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
-    private DatePickerDialog.OnDateSetListener datePickerListener
-            = new DatePickerDialog.OnDateSetListener() {
+    private void updateEditText(EditText txt,Calendar calendar)
+    {
+        String myFormat = "MM/dd/yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        txt.setText(sdf.format(calendar.getTime()));
+    }
 
-        // when dialog box is closed, below method will be called.
-        public void onDateSet(DatePicker view, int selectedYear,
-                              int selectedMonth, int selectedDay) {
-            year = selectedYear;
-            month = selectedMonth;
-            day = selectedDay;
-
-            // set selected date into textview
-            /*tvDisplayDate.setText(new StringBuilder().append(month + 1)
-                    .append("-").append(day).append("-").append(year)
-                    .append(" "));
-
-            // set selected date into datepicker also
-            dpResult.init(year, month, day, null);*/
-
+    DatePickerDialog.OnDateSetListener fromDateDialog = new DatePickerDialog.OnDateSetListener()
+    {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
+        {
+            fromDateCalendar.set(Calendar.YEAR, year);
+            fromDateCalendar.set(Calendar.MONTH, monthOfYear);
+            fromDateCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateEditText(holidayFromDate,fromDateCalendar);
         }
     };
-
-}
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
+    DatePickerDialog.OnDateSetListener toDateDialog = new DatePickerDialog.OnDateSetListener()
     {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_holiday_view, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings)
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
         {
-            return true;
+            toDateCalendar.set(Calendar.YEAR, year);
+            toDateCalendar.set(Calendar.MONTH, monthOfYear);
+            toDateCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateEditText(holidayToDate,toDateCalendar);
+        }
+    };
+    public void onOkClick(View view)
+    {
+        String myFormat = "yyyy-MM-dd";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        String fromDate =sdf.format(fromDateCalendar.getTime());
+        String toDate =sdf.format(toDateCalendar.getTime());
+        new HolidayTask().execute(holidayName.getText().toString(),fromDate,toDate);
+    }
+    class HolidayTask extends AsyncTask<String, String, Void>
+    {
+        //private ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
+        InputStream is = null;
+        String result = "";
+        String response = "";
+        @Override
+        protected Void doInBackground(String... params) {
+            String url_select = getString(R.string.serviceURL)+"/holidays.php";
+            try
+            {
+                URL url = new URL(url_select);
+                HttpURLConnection httpUrlConnection=(HttpURLConnection)url.openConnection();
+                httpUrlConnection.setRequestMethod("POST");
+                httpUrlConnection.setDoOutput(true);
+                OutputStream outputStream = httpUrlConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String data = URLEncoder.encode("holiday_name", "UTF-8") + "=" + URLEncoder.encode(params[0], "UTF-8")+"&"+
+                        URLEncoder.encode("from_date", "UTF-8") + "=" + URLEncoder.encode(params[1], "UTF-8")+"&"+
+                        URLEncoder.encode("to_date", "UTF-8") + "=" + URLEncoder.encode(params[2], "UTF-8");
+                bufferedWriter.write(data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+                is = httpUrlConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"));
+                String line;
+                while ((line = bufferedReader.readLine())!=null)
+                {
+                    response+= line;
+                }
+                bufferedReader.close();
+                is.close();
+                httpUrlConnection.disconnect();
+            }
+            catch (Exception ex){}
+            return null;
         }
 
-        return super.onOptionsItemSelected(item);
+        protected void onPostExecute(Void v) {
+                Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+        }
     }
 }
