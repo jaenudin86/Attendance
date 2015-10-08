@@ -50,7 +50,7 @@ public class MainActivity extends ActivityBaseClass
         }
         else if(pos==4)
         {
-            Intent newIntent=new Intent(this,HolidayView.class);
+            Intent newIntent=new Intent(this,ManageHolidays.class);
             startActivity(newIntent);
         }
     }

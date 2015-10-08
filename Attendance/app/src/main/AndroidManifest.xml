@@ -30,6 +30,10 @@
             android:name=".ManageCourses"
             android:label="@string/title_activity_manage_courses" >
         </activity>
+        <activity
+            android:name=".ManageHolidays"
+            android:label="@string/title_activity_manage_holidays" >
+        </activity>
     </application>
 
 </manifest>

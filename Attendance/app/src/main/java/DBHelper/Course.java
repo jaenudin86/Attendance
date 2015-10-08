@@ -8,7 +8,7 @@ public class Course
     private String course_code;
     private String course_name;
     private String course_description;
-
+    private String facilitator_id;
     public String getCourseCode()
     {
         return course_code;
@@ -37,5 +37,15 @@ public class Course
     public void setCourseDescription(String courseDescription)
     {
         this.course_description = courseDescription;
+    }
+
+    public String getFacilitatorId()
+    {
+        return facilitator_id;
+    }
+
+    public void setFacilitatorId(String facilitator_id)
+    {
+        this.facilitator_id = facilitator_id;
     }
 }

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -56,6 +57,13 @@ public class ManageCourses extends ActivityBaseClass
         Intent intent=new Intent(this,AddCourse.class);
         startActivity(intent);
         finish();
+    }
+    void changeIntent(int pos)
+    {
+        /*Medicine medicine = filteredResults.get(position);
+        Intent intent = new Intent(this,ItemDetails.class);
+        intent.putExtra("selectedMedicineId",medicine.getMedicineId());
+        startActivity(intent);*/
     }
     class GetCourses extends AsyncTask<String, Void, String>
     {
@@ -117,6 +125,16 @@ public class ManageCourses extends ActivityBaseClass
                     try
                     {
                         courseList.setAdapter(new CourseListAdapter(context,courses));
+                        courseList.setOnItemClickListener(
+                                new AdapterView.OnItemClickListener()
+                                {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                                    {
+                                        changeIntent(position);
+                                    }
+                                }
+                        );
                     }
                     catch (Exception ex)
                     {
