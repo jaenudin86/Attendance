@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -23,25 +24,34 @@ import java.net.URLEncoder;
 
 import Helper.Helper;
 
-public class AddCourse extends ActivityBaseClass
+public class EditCourse extends ActivityBaseClass
 {
-    EditText courseCode,courseName,description;
+    String facilitator,courseCode;
     Context context=this;
-    String facilitator;
+    TextView code;
+    EditText courseName,description;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_course);
-        courseCode=(EditText)findViewById(R.id.etAddCourseCourseCode);
-        courseName=(EditText)findViewById(R.id.etAddCourseCourseName);
-        description=(EditText)findViewById(R.id.etAddCourseDescription);
-        facilitator=Helper.getCurrentLoggedinUser(this);
+        setContentView(R.layout.activity_edit_course);
+        facilitator= Helper.getCurrentLoggedinUser(this);
+        code=(TextView)findViewById(R.id.tvEditCourseCode);
+        courseName=(EditText)findViewById(R.id.etEditCourseCourseName);
+        description=(EditText)findViewById(R.id.etEditCourseDescription);
+        Bundle courseData=getIntent().getExtras();
+        if(courseData!=null)
+        {
+            code.setText(courseData.getString("selectedCourseCode"));
+            courseName.setText(courseData.getString("selectedCourseName"));
+            description.setText(courseData.getString("selectedCourseDescription"));
+        }
+
 
     }
     public void onOkClick(View view)
     {
-        new CourseTask().execute(courseCode.getText().toString(),courseName.getText().toString(),description.getText().toString());
+        new CourseTask().execute(code.getText().toString(),courseName.getText().toString(),description.getText().toString());
     }
     class CourseTask extends AsyncTask<String, String, Void>
     {
@@ -55,7 +65,7 @@ public class AddCourse extends ActivityBaseClass
 
             try
             {
-                serviceURL=getString(R.string.serviceURL)+"/addCourse.php";
+                serviceURL=getString(R.string.serviceURL)+"/editCourse.php";
                 URL url = new URL(serviceURL);
                 HttpURLConnection httpUrlConnection=(HttpURLConnection)url.openConnection();
                 httpUrlConnection.setRequestMethod("POST");
@@ -92,4 +102,5 @@ public class AddCourse extends ActivityBaseClass
             startActivity(intent);
         }
     }
+
 }

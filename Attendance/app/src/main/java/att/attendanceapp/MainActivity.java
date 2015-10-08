@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import Helper.Helper;
+
 public class MainActivity extends ActivityBaseClass
 {
 
@@ -20,6 +22,8 @@ public class MainActivity extends ActivityBaseClass
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setListView();
+        Helper.putSharedPref(this, getString(R.string.isLoggedIn_sharedPref_string), "yes");
+        Helper.putSharedPref(this,getString(R.string.loggedInUser_sharedPref_string),"rujoota.shah@gmail.com");
     }
     void setListView()
     {

@@ -60,10 +60,15 @@ public class ManageCourses extends ActivityBaseClass
     }
     void changeIntent(int pos)
     {
-        /*Medicine medicine = filteredResults.get(position);
-        Intent intent = new Intent(this,ItemDetails.class);
-        intent.putExtra("selectedMedicineId",medicine.getMedicineId());
-        startActivity(intent);*/
+        CourseListAdapter adap=(CourseListAdapter)courseList.getAdapter();
+        Course selectedCourse=(Course)adap.getItem(pos);
+        //Toast.makeText(this,selectedCourse.getCourseCode(),Toast.LENGTH_LONG).show();
+
+        Intent intent = new Intent(this,EditCourse.class);
+        intent.putExtra("selectedCourseCode", selectedCourse.getCourseCode());
+        intent.putExtra("selectedCourseName", selectedCourse.getCoursename());
+        intent.putExtra("selectedCourseDescription", selectedCourse.getCourseDescription());
+        startActivity(intent);
     }
     class GetCourses extends AsyncTask<String, Void, String>
     {

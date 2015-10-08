@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -109,6 +110,14 @@ public class CourseListAdapter  extends BaseAdapter
         });
         return row;
     }
+
+    /*public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+        // arg2 = the id of the item in our view (List/Grid) that we clicked
+        // arg3 = the id of the item that we have clicked
+        // if we didn't assign any id for the Object (Book) the arg3 value is 0
+        // That means if we comment, aBookDetail.setBookIsbn(i); arg3 value become 0
+        Toast.makeText(context, "You clicked on position : " + arg2 + " and id : " + arg3, Toast.LENGTH_LONG).show();
+    }*/
     class DeleteCourse extends AsyncTask<String, Void, String>
     {
         InputStream is = null;

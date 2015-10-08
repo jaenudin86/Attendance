@@ -36,11 +36,33 @@ public class ActivityBaseClass extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings)
+        if (id == R.id.action_home)
         {
+            Intent intent=new Intent(this,MainActivity.class);
+            startActivity(intent);
             return true;
         }
-
+        else if(id==R.id.action_share)
+        {
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/html");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.shareSubject));
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.shareBody));
+            startActivity(Intent.createChooser(sharingIntent, "Share via"));
+            return true;
+        }
+        else if(id==R.id.action_about)
+        {
+            Intent intent=new Intent(this,About.class);
+            startActivity(intent);
+            return true;
+        }
+        else if(id==R.id.action_help)
+        {
+            Intent intent=new Intent(this,Help.class);
+            startActivity(intent);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 }

@@ -34,6 +34,18 @@
             android:name=".ManageHolidays"
             android:label="@string/title_activity_manage_holidays" >
         </activity>
+        <activity
+            android:name=".EditCourse"
+            android:label="@string/title_activity_edit_course" >
+        </activity>
+        <activity
+            android:name=".About"
+            android:label="@string/title_activity_about" >
+        </activity>
+        <activity
+            android:name=".Help"
+            android:label="@string/title_activity_help" >
+        </activity>
     </application>
 
 </manifest>
