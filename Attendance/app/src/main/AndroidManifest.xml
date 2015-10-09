@@ -46,6 +46,14 @@
             android:name=".Help"
             android:label="@string/title_activity_help" >
         </activity>
+        <activity
+            android:name=".AddHoliday"
+            android:label="@string/title_activity_add_holiday" >
+        </activity>
+        <activity
+            android:name=".EditHoliday"
+            android:label="@string/title_activity_edit_holiday" >
+        </activity>
     </application>
 
 </manifest>

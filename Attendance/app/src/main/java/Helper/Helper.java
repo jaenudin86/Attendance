@@ -3,6 +3,12 @@ package Helper;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import att.attendanceapp.R;
 
 /**
@@ -11,6 +17,19 @@ import att.attendanceapp.R;
 public class Helper
 {
     static String sharedPrefFileName="userInfo";
+    public static String convertDate(String date)
+    {
+        String formattedDate="";
+        try
+        {
+            DateFormat originalFormat = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
+            DateFormat targetFormat = new SimpleDateFormat("mm/dd/yyyy");
+            Date dt = originalFormat.parse(date);
+            formattedDate = targetFormat.format(dt);
+        }
+        catch (Exception ex){}
+        return formattedDate;
+    }
     public static Boolean isUserLoggedIn(Context context)
     {
         SharedPreferences sharedPreferences = context.getSharedPreferences(sharedPrefFileName, Context.MODE_PRIVATE);

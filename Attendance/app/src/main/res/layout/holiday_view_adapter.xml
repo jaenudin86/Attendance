@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"  android:descendantFocusability="blocksDescendants">
+    <TextView
+
+        android:text="Holiday Name"
+        android:id="@+id/tvAdapterHolidayName" android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_height="wrap_content"
+        android:layout_width="110dp"
+        android:layout_alignParentStart="true" android:layout_alignParentLeft="true"
+        />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+
+        android:text="Holiday From"
+        android:id="@+id/tvAdapterHolidayFrom" android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_toRightOf="@id/tvAdapterHolidayName" android:layout_toEndOf="@id/tvAdapterHolidayName" android:layout_marginLeft="20dp"
+        />
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+
+        android:text=" - "
+        android:id="@+id/tvAdapterText" android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_toRightOf="@id/tvAdapterHolidayFrom"
+        android:layout_toEndOf="@id/tvAdapterHolidayFrom" android:layout_marginLeft="5dp"
+        />
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:text="Holiday To"
+        android:id="@+id/tvAdapterHolidayTo"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_below="@+id/tvAdapterHolidayFrom"
+        android:layout_toRightOf="@+id/tvAdapterHolidayName"
+        android:layout_toEndOf="@+id/tvAdapterHolidayName" android:layout_marginLeft="20dp"/>
+
+    <ImageButton
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" android:layout_marginLeft="30dp"
+        android:id="@+id/ibtnHolidayDelete" android:src="@drawable/icon_delete" android:layout_toRightOf="@+id/tvAdapterHolidayFrom"
+        android:layout_toEndOf="@id/tvAdapterHolidayFrom"/>
+
+</RelativeLayout>

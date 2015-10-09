@@ -8,14 +8,17 @@ import java.util.Date;
 public class Holiday
 {
     private String holidayName;
-    private Date fromDate;
-    private Date toDate;
-
-    public Holiday(String holidayName,Date fromDate,Date toDate)
+    private String fromDate;
+    private String toDate;
+    private String id;
+    private String facilitatorId;
+    public Holiday(String holidayName,String fromDate,String toDate,String id,String facilitatorId)
     {
         this.setHolidayName(holidayName);
         this.setFromDate(fromDate);
         this.setToDate(toDate);
+        this.setFacilitatorId(facilitatorId);
+        this.setId(id);
     }
     public String getHolidayName()
     {
@@ -27,23 +30,41 @@ public class Holiday
         this.holidayName = holidayName;
     }
 
-    public Date getFromDate()
+    public String getFromDate()
     {
         return fromDate;
     }
 
-    public void setFromDate(Date fromDate)
+    public void setFromDate(String fromDate)
     {
         this.fromDate = fromDate;
     }
 
-    public Date getToDate()
+    public String getToDate()
     {
         return toDate;
     }
 
-    public void setToDate(Date toDate)
+    public void setToDate(String toDate)
     {
         this.toDate = toDate;
+    }
+    public void setFacilitatorId(String facilitatorId)
+{
+    this.facilitatorId = facilitatorId;
+}
+    public String getFacilitatorId()
+    {
+        return this.facilitatorId;
+    }
+
+    public String getId()
+    {
+        return id;
+    }
+
+    public void setId(String id)
+    {
+        this.id = id;
     }
 }

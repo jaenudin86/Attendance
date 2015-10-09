@@ -49,6 +49,10 @@ public class EditCourse extends ActivityBaseClass
 
 
     }
+    public void onCancelClick(View view)
+    {
+        finish();
+    }
     public void onOkClick(View view)
     {
         new CourseTask().execute(code.getText().toString(),courseName.getText().toString(),description.getText().toString());

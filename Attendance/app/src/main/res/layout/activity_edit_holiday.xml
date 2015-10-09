@@ -1,0 +1,103 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                tools:context="att.attendanceapp.EditHoliday">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Holiday name"
+        android:id="@+id/tvEditHolidayName"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etEditHolidayName"
+        android:layout_below="@+id/tvEditHolidayName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="From date"
+        android:id="@+id/tvEditHolidayFromDate"
+        android:layout_below="@+id/etEditHolidayName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="42dp"/>
+    
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/etEditHolidayFromDate"
+        android:layout_below="@+id/tvEditHolidayFromDate"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+    
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ibtnEditHolidayFromDate"
+        android:layout_alignTop="@+id/etEditHolidayFromDate"
+        android:layout_toRightOf="@+id/etEditHolidayFromDate"
+        android:layout_toEndOf="@+id/etEditHolidayFromDate"
+        android:src="@drawable/icon_calendar" android:onClick="setFromDate"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="To date"
+        android:id="@+id/tvEditHolidayToDate"
+        android:layout_below="@+id/etEditHolidayFromDate"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="46dp"/>
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/etEditHolidayToDate"
+        android:layout_below="@+id/tvEditHolidayToDate"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ibtnEditHolidayToDate" android:onClick="setToDate"
+        android:layout_alignTop="@+id/etEditHolidayToDate"
+        android:layout_toRightOf="@+id/etEditHolidayToDate"
+        android:layout_toEndOf="@+id/etEditHolidayToDate"
+        android:src="@drawable/icon_calendar"/>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ok"
+        android:id="@+id/btnEditHolidayOk"
+        android:layout_below="@+id/etEditHolidayToDate"
+        android:layout_toLeftOf="@+id/btnEditHolidayCancel"
+        android:layout_toStartOf="@+id/btnEditHolidayCancel"
+        android:layout_marginTop="50dp" android:onClick="onOkClick"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:id="@+id/btnEditHolidayCancel"
+        android:layout_below="@+id/etEditHolidayToDate"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="50dp" android:onClick="onCancelClick"/>
+
+</RelativeLayout>
