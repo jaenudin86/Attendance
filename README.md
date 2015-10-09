@@ -31,3 +31,18 @@ Plans for next week:
 Problems:
 ->Parse object, how to set up relations between tables?
 ->Web service in php setup, used existing SE cloud
+
+Journal entry for 10th Oct, 2015
+What I have done:
+->Created own amazon cloud
+->Finished CRUD for courses
+->Finished CRUD for holidays
+->Finished common menu
+
+Plans for next week:
+->Calendar CRUD
+
+Problems:
+->Setting up cloud with database
+->Dealing with different date formats and calendar in holidays
+->List view adapters
