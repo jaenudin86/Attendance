@@ -54,6 +54,10 @@
             android:name=".EditHoliday"
             android:label="@string/title_activity_edit_holiday" >
         </activity>
+        <activity
+            android:name=".MyTimetable"
+            android:label="@string/title_activity_my_timetable" >
+        </activity>
     </application>
 
 </manifest>

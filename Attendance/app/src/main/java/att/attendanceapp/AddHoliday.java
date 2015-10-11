@@ -1,6 +1,8 @@
 package att.attendanceapp;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -25,11 +28,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import DBHelper.Holiday;
 import Helper.Helper;
 
 public class AddHoliday extends ActivityBaseClass
 {
-
+    Context context=this;
     EditText holidayFromDate, holidayToDate;
     EditText holidayName;
     String facilitator;
@@ -47,12 +51,22 @@ public class AddHoliday extends ActivityBaseClass
     Calendar toDateCalendar = Calendar.getInstance();
     public void setFromDate(View view)
     {
+        InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
         new DatePickerDialog(this, fromDateDialog, fromDateCalendar.get(Calendar.YEAR), fromDateCalendar.get(Calendar.MONTH),
                 fromDateCalendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
     public void setToDate(View view)
     {
+        InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
         new DatePickerDialog(this, toDateDialog, toDateCalendar.get(Calendar.YEAR), toDateCalendar.get(Calendar.MONTH),
                 toDateCalendar.get(Calendar.DAY_OF_MONTH)).show();
     }
@@ -92,29 +106,32 @@ public class AddHoliday extends ActivityBaseClass
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         String fromDate =sdf.format(fromDateCalendar.getTime());
         String toDate =sdf.format(toDateCalendar.getTime());
-        new HolidayTask().execute(holidayName.getText().toString(),fromDate,toDate);
+        Holiday holiday=new Holiday(holidayName.getText().toString(),fromDate,toDate,facilitator);
+        new HolidayTask().execute(holiday);
     }
-    class HolidayTask extends AsyncTask<String, String, Void>
+    class HolidayTask extends AsyncTask<Holiday, String, Void>
     {
         //private ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
         InputStream is = null;
         String result = "";
         String response = "";
+        Holiday holiday;
         @Override
-        protected Void doInBackground(String... params) {
+        protected Void doInBackground(Holiday... params) {
             String url_select = getString(R.string.serviceURL)+"/addHoliday.php";
             try
             {
+                holiday=(Holiday)params[0];
                 URL url = new URL(url_select);
                 HttpURLConnection httpUrlConnection=(HttpURLConnection)url.openConnection();
                 httpUrlConnection.setRequestMethod("POST");
                 httpUrlConnection.setDoOutput(true);
                 OutputStream outputStream = httpUrlConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                String data = URLEncoder.encode("holiday_name", "UTF-8") + "=" + URLEncoder.encode(params[0], "UTF-8")+"&"+
-                        URLEncoder.encode("from_date", "UTF-8") + "=" + URLEncoder.encode(params[1], "UTF-8")+"&"+
-                        URLEncoder.encode("to_date", "UTF-8") + "=" + URLEncoder.encode(params[2], "UTF-8")+"&"+
-                        URLEncoder.encode("facilitator_id", "UTF-8") + "=" + URLEncoder.encode(facilitator, "UTF-8");
+                String data = URLEncoder.encode("holiday_name", "UTF-8") + "=" + URLEncoder.encode(holiday.getHolidayName(), "UTF-8")+"&"+
+                        URLEncoder.encode("from_date", "UTF-8") + "=" + URLEncoder.encode(holiday.getFromDate(), "UTF-8")+"&"+
+                        URLEncoder.encode("to_date", "UTF-8") + "=" + URLEncoder.encode(holiday.getToDate(), "UTF-8")+"&"+
+                        URLEncoder.encode("facilitator_id", "UTF-8") + "=" + URLEncoder.encode(holiday.getFacilitatorId(), "UTF-8");
                 bufferedWriter.write(data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -135,10 +152,14 @@ public class AddHoliday extends ActivityBaseClass
         }
 
         protected void onPostExecute(Void v) {
-            Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+            //Toast.makeText(context, response, Toast.LENGTH_LONG).show();
+            holiday.setId(response);
+            Intent intent = getIntent(); //gets the intent that called this intent
+            intent.putExtra("newHoliday", holiday);
+            setResult(Activity.RESULT_OK, intent);
             finish();
-            Intent intent=new Intent(getApplicationContext(),ManageHolidays.class);
-            startActivity(intent);
+            //Intent intent=new Intent(context,ManageHolidays.class);
+            //startActivity(intent);
         }
     }
 }

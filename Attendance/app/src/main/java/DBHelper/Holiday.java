@@ -1,18 +1,27 @@
 package DBHelper;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by rujoota on 01-10-2015.
  */
-public class Holiday
+public class Holiday implements Serializable
 {
     private String holidayName;
     private String fromDate;
     private String toDate;
     private String id;
     private String facilitatorId;
-    public Holiday(String holidayName,String fromDate,String toDate,String id,String facilitatorId)
+    public Holiday(String holidayName,String fromDate,String toDate,String facilitatorId)
+    {
+        this.setHolidayName(holidayName);
+        this.setFromDate(fromDate);
+        this.setToDate(toDate);
+        this.setFacilitatorId(facilitatorId);
+        //this.setId(id);
+    }
+    public Holiday(String holidayName,String fromDate,String toDate,String facilitatorId,String id)
     {
         this.setHolidayName(holidayName);
         this.setFromDate(fromDate);

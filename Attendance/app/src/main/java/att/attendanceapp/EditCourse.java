@@ -1,5 +1,6 @@
 package att.attendanceapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -22,6 +23,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import DBHelper.Course;
 import Helper.Helper;
 
 public class EditCourse extends ActivityBaseClass
@@ -30,6 +32,7 @@ public class EditCourse extends ActivityBaseClass
     Context context=this;
     TextView code;
     EditText courseName,description;
+    Course course;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -55,9 +58,10 @@ public class EditCourse extends ActivityBaseClass
     }
     public void onOkClick(View view)
     {
-        new CourseTask().execute(code.getText().toString(),courseName.getText().toString(),description.getText().toString());
+        course=new Course(code.getText().toString(),courseName.getText().toString(),description.getText().toString(),facilitator);
+        new CourseTask().execute(course);
     }
-    class CourseTask extends AsyncTask<String, String, Void>
+    class CourseTask extends AsyncTask<Course, String, Void>
     {
         //private ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
         String serviceURL;
@@ -65,7 +69,7 @@ public class EditCourse extends ActivityBaseClass
         String result = "";
         String response = "";
         @Override
-        protected Void doInBackground(String... params) {
+        protected Void doInBackground(Course... params) {
 
             try
             {
@@ -76,10 +80,10 @@ public class EditCourse extends ActivityBaseClass
                 httpUrlConnection.setDoOutput(true);
                 OutputStream outputStream = httpUrlConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                String data = URLEncoder.encode("course_code", "UTF-8") + "=" + URLEncoder.encode(params[0], "UTF-8")+"&"+
-                        URLEncoder.encode("course_name", "UTF-8") + "=" + URLEncoder.encode(params[1], "UTF-8")+"&"+
-                        URLEncoder.encode("description", "UTF-8") + "=" + URLEncoder.encode(params[2], "UTF-8")+"&"+
-                        URLEncoder.encode("facilitator_id", "UTF-8") + "=" + URLEncoder.encode(facilitator, "UTF-8");
+                String data = URLEncoder.encode("course_code", "UTF-8") + "=" + URLEncoder.encode(params[0].getCourseCode(), "UTF-8")+"&"+
+                        URLEncoder.encode("course_name", "UTF-8") + "=" + URLEncoder.encode(params[0].getCoursename(), "UTF-8")+"&"+
+                        URLEncoder.encode("description", "UTF-8") + "=" + URLEncoder.encode(params[0].getCourseDescription(), "UTF-8")+"&"+
+                        URLEncoder.encode("facilitator_id", "UTF-8") + "=" + URLEncoder.encode(params[0].getFacilitatorId(), "UTF-8");
                 bufferedWriter.write(data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -100,10 +104,10 @@ public class EditCourse extends ActivityBaseClass
         }
 
         protected void onPostExecute(Void v) {
-            Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+            Intent intent = getIntent(); //gets the intent that called this intent
+            intent.putExtra("editCourse", course);
+            setResult(Activity.RESULT_OK, intent);
             finish();
-            Intent intent=new Intent(context,ManageCourses.class);
-            startActivity(intent);
         }
     }
 

@@ -61,7 +61,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine" android:gravity="top|left"
-        android:ems="10" android:minLines="3"
+        android:ems="10" android:minLines="3" android:maxLines="7"
         android:id="@+id/etEditCourseDescription"
         android:layout_below="@+id/tvEditCourseDescription"
         android:layout_alignParentLeft="true"

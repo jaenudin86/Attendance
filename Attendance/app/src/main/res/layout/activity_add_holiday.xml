@@ -44,7 +44,7 @@
         android:id="@+id/etHolidayFromDate"
         android:layout_below="@+id/tvHolidayFromDate"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true" android:enabled="false"/>
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
         android:id="@+id/etHolidayToDate"
         android:layout_below="@+id/tvHolidayToDate"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true" android:enabled="false"/>
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

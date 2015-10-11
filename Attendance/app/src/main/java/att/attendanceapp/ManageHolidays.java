@@ -1,13 +1,11 @@
 package att.attendanceapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -15,7 +13,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.parse.*;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -28,12 +25,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
-import DBHelper.Course;
-import DBHelper.DatabaseHandler;
 import DBHelper.Holiday;
 import Helper.Helper;
 
@@ -41,7 +33,11 @@ public class ManageHolidays extends ActivityBaseClass
 {
     ListView holidayList;
     Context context=this;
-    ArrayList<Holiday> holidays;
+    ArrayList<Holiday> holidayArrayList;
+    HolidayListAdapter holidayListAdapter;
+    private static final int EDIT_CODE = 2;
+    private static final int ADD_CODE = 1;
+    int position;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -57,8 +53,9 @@ public class ManageHolidays extends ActivityBaseClass
 
     void changeIntent(int pos)
     {
-        HolidayListAdapter adap=(HolidayListAdapter)holidayList.getAdapter();
-        Holiday selectedCourse=(Holiday)adap.getItem(pos);
+        position=pos;
+        //HolidayListAdapter adap=(HolidayListAdapter)holidayList.getAdapter();
+        Holiday selectedCourse=(Holiday)holidayListAdapter.getItem(pos);
         //Toast.makeText(this,selectedCourse.getCourseCode(),Toast.LENGTH_LONG).show();
 
         Intent intent = new Intent(this,EditHoliday.class);
@@ -66,12 +63,47 @@ public class ManageHolidays extends ActivityBaseClass
         intent.putExtra("selectedHolidayFrom", Helper.convertDate(selectedCourse.getFromDate()));
         intent.putExtra("selectedHolidayTo", Helper.convertDate(selectedCourse.getToDate()));
         intent.putExtra("selectedHoliday", selectedCourse.getId());
-        startActivity(intent);
+        startActivityForResult(intent, EDIT_CODE);
     }
     public void onAddHolidayClick(View view)
     {
         Intent intent=new Intent(this,AddHoliday.class);
-        startActivity(intent);
+        startActivityForResult(intent, ADD_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ADD_CODE && resultCode == Activity.RESULT_OK)
+        {
+            holidayArrayList.add((Holiday) data.getSerializableExtra("newHoliday"));
+            HolidayListAdapter adapter=(HolidayListAdapter)holidayList.getAdapter();
+            adapter.notifyDataSetChanged();
+        }
+        else if(requestCode == EDIT_CODE && resultCode == Activity.RESULT_OK)
+        {
+            holidayArrayList.remove(position);
+            holidayArrayList.add(position,(Holiday) data.getSerializableExtra("editHoliday"));
+            HolidayListAdapter adapter=(HolidayListAdapter)holidayList.getAdapter();
+            adapter.notifyDataSetChanged();
+        }
+    }
+    void setListAdapter()
+    {
+        holidayListAdapter=new HolidayListAdapter(context, holidayArrayList);
+        holidayList.setAdapter(holidayListAdapter);
+        holidayList.setOnItemClickListener(
+                new AdapterView.OnItemClickListener()
+                {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                    {
+                        changeIntent(position);
+                    }
+                }
+        );
     }
     class GetHolidays extends AsyncTask<String, Void, String>
     {
@@ -104,7 +136,7 @@ public class ManageHolidays extends ActivityBaseClass
                 }
                 Gson gson = new Gson();
                 Type typeCourse = new TypeToken<ArrayList<Holiday>>(){}.getType();
-                holidays = gson.fromJson(response, typeCourse);
+                holidayArrayList = gson.fromJson(response, typeCourse);
                 bufferedReader.close();
                 is.close();
                 httpUrlConnection.disconnect();
@@ -126,34 +158,24 @@ public class ManageHolidays extends ActivityBaseClass
                 // if no data found then
                 if(response.isEmpty())
                 {
-                    Toast.makeText(getApplicationContext(), "No holidays found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "No holidayArrayList found", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
                     try
                     {
-                        holidayList.setAdapter(new HolidayListAdapter(context,holidays));
-                        holidayList.setOnItemClickListener(
-                                new AdapterView.OnItemClickListener()
-                                {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-                                    {
-                                        changeIntent(position);
-                                    }
-                                }
-                        );
+                        setListAdapter();
+
                     }
                     catch (Exception ex)
                     {
-                        //Log.e("Attendance","Problems in ManageCourses:"+ex.getMessage());
+                        Log.e("Attendance", "Problems in Manage holidays:" + ex.getMessage());
                     }
                 }
             }
             else
             {
                 Toast.makeText(context,v,Toast.LENGTH_SHORT).show();
-                //relativeLayout.setVisibility(View.INVISIBLE);
             }
         }
     }

@@ -1,23 +1,15 @@
 package att.attendanceapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -30,16 +22,20 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.List;
 
 import DBHelper.Course;
+
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 public class ManageCourses extends ActivityBaseClass
 {
     ListView courseList;
     Context context=this;
-    ArrayList<Course> courses;
+    ArrayList<Course> courseArrayList;
+    private static final int EDIT_CODE = 2;
+    private static final int ADD_CODE = 1;
+    int position;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -54,12 +50,13 @@ public class ManageCourses extends ActivityBaseClass
     }
     public void onAddCourseClick(View view)
     {
-        Intent intent=new Intent(this,AddCourse.class);
-        startActivity(intent);
-        finish();
+        Intent intent =new Intent(this,AddCourse.class);
+        startActivityForResult(intent, ADD_CODE);
+        //finish();
     }
     void changeIntent(int pos)
     {
+        position=pos;
         CourseListAdapter adap=(CourseListAdapter)courseList.getAdapter();
         Course selectedCourse=(Course)adap.getItem(pos);
         //Toast.makeText(this,selectedCourse.getCourseCode(),Toast.LENGTH_LONG).show();
@@ -68,7 +65,26 @@ public class ManageCourses extends ActivityBaseClass
         intent.putExtra("selectedCourseCode", selectedCourse.getCourseCode());
         intent.putExtra("selectedCourseName", selectedCourse.getCoursename());
         intent.putExtra("selectedCourseDescription", selectedCourse.getCourseDescription());
-        startActivity(intent);
+        startActivityForResult(intent, EDIT_CODE);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ADD_CODE && resultCode == Activity.RESULT_OK)
+        {
+            courseArrayList.add((Course) data.getSerializableExtra("newCourse"));
+            CourseListAdapter adapter=(CourseListAdapter)courseList.getAdapter();
+            adapter.notifyDataSetChanged();
+        }
+        else if(requestCode == EDIT_CODE && resultCode == Activity.RESULT_OK)
+        {
+            courseArrayList.remove(position);
+            courseArrayList.add(position,(Course) data.getSerializableExtra("editCourse"));
+            CourseListAdapter adapter=(CourseListAdapter)courseList.getAdapter();
+            adapter.notifyDataSetChanged();
+        }
     }
     class GetCourses extends AsyncTask<String, Void, String>
     {
@@ -101,7 +117,7 @@ public class ManageCourses extends ActivityBaseClass
                 }
                 Gson gson = new Gson();
                 Type typeCourse = new TypeToken<ArrayList<Course>>(){}.getType();
-                courses = gson.fromJson(response, typeCourse);
+                courseArrayList = gson.fromJson(response, typeCourse);
                 bufferedReader.close();
                 is.close();
                 httpUrlConnection.disconnect();
@@ -123,13 +139,13 @@ public class ManageCourses extends ActivityBaseClass
                 // if no data found then
                 if(response.isEmpty())
                 {
-                    Toast.makeText(getApplicationContext(),"No courses found",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"No courseArrayList found",Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
                     try
                     {
-                        courseList.setAdapter(new CourseListAdapter(context,courses));
+                        courseList.setAdapter(new CourseListAdapter(context, courseArrayList));
                         courseList.setOnItemClickListener(
                                 new AdapterView.OnItemClickListener()
                                 {

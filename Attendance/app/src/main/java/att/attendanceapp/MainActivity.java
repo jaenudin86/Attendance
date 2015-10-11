@@ -57,5 +57,10 @@ public class MainActivity extends ActivityBaseClass
             Intent newIntent=new Intent(this,ManageHolidays.class);
             startActivity(newIntent);
         }
+        else if(pos==3)
+        {
+            Intent newIntent=new Intent(this,MyTimetable.class);
+            startActivity(newIntent);
+        }
     }
 }
