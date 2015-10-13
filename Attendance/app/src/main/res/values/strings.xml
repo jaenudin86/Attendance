@@ -40,4 +40,5 @@
     <string name="title_activity_add_holiday">Add Holiday</string>
     <string name="title_activity_edit_holiday">Edit Holiday</string>
     <string name="title_activity_my_timetable">My Timetable</string>
+    <string name="title_activity_test_grid">TestGrid</string>
 </resources>

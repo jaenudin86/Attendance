@@ -2,6 +2,8 @@ package Helper;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.nfc.Tag;
+import android.util.Log;
 
 
 import java.text.DateFormat;
@@ -17,6 +19,36 @@ import att.attendanceapp.R;
 public class Helper
 {
     static String sharedPrefFileName="userInfo";
+    static String TAG="ATTENDANCE HELPER";
+    public static String convertDateToFormat(String date,String format)
+    {
+
+        Date dt=null;
+        SimpleDateFormat sdf=null;
+        try
+        {
+            sdf = new SimpleDateFormat(format, Locale.US);
+            dt=new Date(date);
+        }
+        catch (Exception ex){
+            Log.e(TAG,ex.getMessage());
+        }
+        return sdf.format(dt);
+    }
+    public static String convertDateToFormat(Date date,String format)
+    {
+
+        SimpleDateFormat sdf=null;
+        try
+        {
+            sdf = new SimpleDateFormat(format, Locale.US);
+
+        }
+        catch (Exception ex){
+            Log.e(TAG,ex.getMessage());
+        }
+        return sdf.format(date);
+    }
     public static String convertDate(String date)
     {
         String formattedDate="";
