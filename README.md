@@ -32,7 +32,7 @@ Problems:
 ->Parse object, how to set up relations between tables?
 ->Web service in php setup, used existing SE cloud
 
-Journal entry for 10th Oct, 2015
+Journal entry for 7th Oct, 2015
 What I have done:
 ->Created own amazon cloud
 ->Finished CRUD for courses
@@ -46,3 +46,16 @@ Problems:
 ->Setting up cloud with database
 ->Dealing with different date formats and calendar in holidays
 ->List view adapters
+
+Journal entry for 15th Oct, 2015
+What I have done:
+->Created customized calendar
+->created add calendar activity with selecter xml - defining state of checkboxed buttons
+
+Plan for next week:
+Finishing my time table
+Starting with attendance filling part
+
+Problems:
+Custom calendar from almost start - extensive testing and bug fixing required. Saw some ready-to-use components but not suitable for my needs
+Fixing old code of holidays and courses-added startactivityforresult in add and edit.
