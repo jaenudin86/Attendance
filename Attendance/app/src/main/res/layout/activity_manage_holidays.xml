@@ -5,7 +5,7 @@
                 android:paddingLeft="@dimen/listview_padding"
                 android:paddingRight="@dimen/listview_padding"
 
-                tools:context="att.attendanceapp.ManageHolidays">
+                tools:context="att.attendanceapp.ManageHolidays" >
 
 
     <ListView
@@ -15,7 +15,7 @@
         android:layout_marginTop="20dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true" />
 
     <ImageButton
         android:layout_width="60dp"

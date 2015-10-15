@@ -1,10 +1,15 @@
 package att.attendanceapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.text.AndroidCharacter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -17,11 +22,8 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
-import DBHelper.Course;
 import DBHelper.Holiday;
 import Helper.Helper;
 
@@ -73,19 +75,20 @@ public class HolidayListAdapter  extends BaseAdapter
     @Override
     public View getView(final int position, View convertView, ViewGroup parent)
     {
-        View row=convertView;
+        View view=convertView;
         ViewHolder holder=null;
-        if(row==null)
+        if(view==null)
         {
             LayoutInflater inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row=inflater.inflate(R.layout.holiday_view_adapter,parent, false);
-            holder=new ViewHolder(row);
-            row.setTag(holder);
+            view=inflater.inflate(R.layout.holiday_view_adapter,parent, false);
+            holder=new ViewHolder(view);
+            view.setTag(holder);
         }
         else
         {
-            holder=(ViewHolder)row.getTag();
+            holder=(ViewHolder)view.getTag();
         }
+        final View row=view;
         final Holiday obj = holidays.get(position);
         holder.holidayName.setText(obj.getHolidayName());
         holder.from.setText(Helper.convertDate(obj.getFromDate().toString()));
@@ -95,15 +98,63 @@ public class HolidayListAdapter  extends BaseAdapter
             @Override
             public void onClick(View v)
             {
-                holidays.remove(position);
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                alertDialog.setTitle("Delete alert");
+                alertDialog.setMessage("Are you sure you want to delete this?");
+                alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        Holiday itemToRemove=holidays.get(position);
+                        Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_out_right);
+                        animation.setDuration(1000);
+                        deleteOnAnimationComplete(animation, itemToRemove);
+                        row.startAnimation(animation);
+                    }
+                });
+                alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        dialog.dismiss();
+                    }
+                });
+                alertDialog.show();
+            }
+        });
+
+        if(obj.shouldAnimateOnAdd == true)
+        {
+            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
+            animation.setDuration(1000);
+            row.startAnimation(animation);
+            obj.shouldAnimateOnAdd =false;
+        }
+        return row;
+    }
+
+    private void deleteOnAnimationComplete(Animation myAnimation, final Holiday obj) {
+        myAnimation.setAnimationListener(new Animation.AnimationListener()
+        {
+            @Override
+            public void onAnimationStart(Animation animation)
+            {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation)
+            {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation)
+            {
+                holidays.remove(obj);
                 notifyDataSetChanged();
                 new DeleteHoliday().execute(obj.getFacilitatorId(), obj.getId());
             }
         });
-        return row;
     }
-
-
     class DeleteHoliday extends AsyncTask<String, Void, String>
     {
         InputStream is = null;

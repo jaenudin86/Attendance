@@ -13,6 +13,7 @@ public class Holiday implements Serializable
     private String toDate;
     private String id;
     private String facilitatorId;
+    public boolean shouldAnimateOnAdd =false;
     public Holiday(String holidayName,String fromDate,String toDate,String facilitatorId)
     {
         this.setHolidayName(holidayName);

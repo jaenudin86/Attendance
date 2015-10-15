@@ -9,10 +9,17 @@
         <item name="android:background">@drawable/image_button_global</item>
 
     </style>
+    <style name="round_button" parent="@android:style/Widget.Button">
+    <item name="android:background">@drawable/floating_action_button</item>
+    <item name="android:textColor">@color/white</item>
+</style>
+    <style name="round_button_deselect" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/round_item</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
     <color name="mainColor">#D8B25C</color>
     <color name="transparent">#00000000</color>
-    <color name="summer">#44eebd82</color>
-    <color name="fall">#44d8d27e</color>
-    <color name="winter">#44a1c1da</color>
-    <color name="spring">#448da64b</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="holiday">#79daff</color>
 </resources>

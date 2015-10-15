@@ -1,8 +1,10 @@
 package att.attendanceapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +12,28 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import DBHelper.Holiday;
+import Helper.Helper;
 
 /**
  * Created by rujoota on 12-10-2015.
@@ -25,23 +44,23 @@ public class CalendarAdapter extends BaseAdapter
     int month,year;
     private final int[] daysOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     private final String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-    private final String[] weekdays = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-    ArrayList<String> list = new ArrayList<String>();
-    private static final int DAY_OFFSET = 1;
-    private int prevMonthDays;
+
+    ArrayList<String> daysList = new ArrayList<String>();
     private int currentDayOfMonth,currentWeekDay;
-    private TextView gridcell;
-    public CalendarAdapter(Context context,int month,int year)
+    private Button gridcell;
+    String[] day_color;
+    ArrayList<Holiday> holidayArrayList=new ArrayList<Holiday>();
+    int position;
+    public CalendarAdapter(Context context,int month,int year,ArrayList<Holiday> list)
     {
-        //super();
         this.context=context;
         this.month=month;
         this.year = year;
         Calendar calendar = Calendar.getInstance();
         currentDayOfMonth=calendar.get(Calendar.DAY_OF_MONTH);
         currentWeekDay = calendar.get(Calendar.DAY_OF_WEEK);
-        // Print Month
-
+        this.holidayArrayList=list;
+        // printing a day
         printMonth(month, year);
     }
 
@@ -62,7 +81,6 @@ public class CalendarAdapter extends BaseAdapter
         daysInMonth = daysOfMonth[currentMonth];
         // Gregorian Calendar : MINUS 1, set to FIRST OF MONTH
         GregorianCalendar cal = new GregorianCalendar(yy, currentMonth, 1);
-
 
         if (currentMonth == 11)//december
         {
@@ -108,42 +126,41 @@ public class CalendarAdapter extends BaseAdapter
         }
         daysInPrevMonth = daysOfMonth[prevMonth];
 
-        // Trailing Month days
+        // Prev Month days
         for (int i = 0; i < trailingSpaces-1; i++)
         {
-            list.add(String.valueOf((daysInPrevMonth - trailingSpaces+2 + i) + "-GREY" + "-" + months[prevMonth] + "-" + prevYear));
+            daysList.add(String.valueOf((daysInPrevMonth - trailingSpaces + 2 + i) + "-GREY" + "-" + prevMonth + "-" + prevYear));
         }
-
+        Calendar now = Calendar.getInstance();
         // Current Month Days
         for (int i = 1; i <= daysInMonth; i++)
         {
-            if (i == currentDayOfMonth)
+            if (i == currentDayOfMonth && currentMonth==now.get(Calendar.MONTH))
             {
-                list.add(String.valueOf(i) + "-BLUE" + "-" + months[currentMonth] + "-" + yy);
+                daysList.add(String.valueOf(i) + "-YELLOW" + "-" + currentMonth + "-" + yy);
             }
             else
             {
-                list.add(String.valueOf(i) + "-WHITE" + "-" + months[currentMonth] + "-" + yy);
+                daysList.add(String.valueOf(i) + "-BLACK" + "-" + currentMonth + "-" + yy);
             }
         }
-
-        // Leading Month days
-        for (int i = 0; i < list.size() % 7; i++)
+        // Next Month days
+        for (int i = 0; i < daysList.size() % 7; i++)
         {
-            list.add(String.valueOf(i + 1) + "-GREY" + "-" + months[nextMonth] + "-" + nextYear);
+            daysList.add(String.valueOf(i + 1) + "-GREY" + "-" + nextMonth + "-" + nextYear);
         }
     }
 
     @Override
     public int getCount()
     {
-        return list.size();
+        return daysList.size();
     }
 
     @Override
     public Object getItem(int position)
     {
-        return list.get(position);
+        return daysList.get(position);
     }
 
     @Override
@@ -162,32 +179,38 @@ public class CalendarAdapter extends BaseAdapter
             row = inflater.inflate(R.layout.calendar_days_grid, parent, false);
         }
 
-
-        // ACCOUNT FOR SPACING
-
-
-        String[] day_color = list.get(position).split("-");
+        this.position=position;
+        gridcell= (Button) row.findViewById(R.id.tvCalendarDay);
+        day_color = daysList.get(position).split("-");
         String theday = day_color[0];
         String themonth = day_color[2];
         String theyear = day_color[3];
-
-        gridcell= (TextView) row.findViewById(R.id.btnCalendarDay);
         // Set the Day GridCell
         gridcell.setText(theday);
         gridcell.setTag(theday + "-" + themonth + "-" + theyear);
-
-
         if(day_color[1].equals("GREY"))
         {
-            gridcell.setTextColor(Color.LTGRAY);
+            gridcell.setBackgroundColor(Color.LTGRAY);
         }
-        if (day_color[1].equals("WHITE"))
+        if (day_color[1].equals("BLACK"))
         {
-            gridcell.setTextColor(Color.BLACK);
+            gridcell.setBackgroundColor(Color.WHITE);
         }
-        if (day_color[1].equals("BLUE"))
+        if (day_color[1].equals("YELLOW"))
         {
-            gridcell.setTextColor(Color.BLUE);
+            gridcell.setBackgroundResource(R.color.mainColor);
+        }
+        for(int i=0;i<holidayArrayList.size();i++)
+        {
+            Date currentPrintingDate = new Date(Integer.parseInt(theyear), Integer.parseInt(themonth)+1, Integer.parseInt(theday));
+            String dt[]=holidayArrayList.get(i).getFromDate().split("-");
+            Date fromDate=new Date(Integer.parseInt(dt[0]),Integer.parseInt(dt[1]),Integer.parseInt(dt[2]));
+            if (currentPrintingDate.equals(fromDate))
+            {
+                //gridcell.setBackgroundResource(R.drawable.square_item);
+                gridcell.setBackgroundResource(R.color.holiday);
+                break;
+            }
         }
         return row;
     }

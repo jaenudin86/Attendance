@@ -45,7 +45,7 @@ public class ActivityBaseClass extends AppCompatActivity
         else if(id==R.id.action_share)
         {
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-            sharingIntent.setType("text/html");
+            sharingIntent.setType("text/plain");
             sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.shareSubject));
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.shareBody));
             startActivity(Intent.createChooser(sharingIntent, "Share via"));

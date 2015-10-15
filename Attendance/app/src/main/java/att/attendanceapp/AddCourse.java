@@ -46,6 +46,7 @@ public class AddCourse extends ActivityBaseClass
     public void onOkClick(View view)
     {
         Course course=new Course(courseCode.getText().toString(),courseName.getText().toString(),description.getText().toString(),facilitator);
+        course.shouldAnimateOnAdd =true;
         new CourseTask().execute(course);
     }
     class CourseTask extends AsyncTask<Course, String, Void>

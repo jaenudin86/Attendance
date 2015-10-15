@@ -4,22 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-
+    <TextView android:id="@+id/tvTimetableHelp" android:layout_marginBottom="10dp"
+              android:layout_width="wrap_content" android:layout_alignParentStart="true" android:layout_alignParentLeft="true" android:layout_alignParentTop="true"
+              android:layout_height="wrap_content" android:text="Blue-holiday, green-attendance filled, yellow-current day,red-attendance not filled"/>
     <!-- date toolbar -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="12dp"
-        android:paddingBottom="12dp"
         android:paddingLeft="30dp"
         android:paddingRight="30dp">
 
 
         <ImageButton
             android:id="@+id/ibtnCalendarPrev"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentLeft="true" android:background="@drawable/floating_action_button"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/floating_action_button"
             android:src="@drawable/icon_prev" android:onClick="prevMonthClicked"/>
 
 
@@ -34,8 +35,8 @@
 
         <ImageButton
             android:id="@+id/ibtnCalendarNext"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_alignParentRight="true"
             
             android:src="@drawable/icon_next" android:onClick="nextMonthClicked" android:background="@drawable/floating_action_button"/>
@@ -55,10 +56,19 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:gravity="center"
         android:horizontalSpacing="10dp"
-        android:verticalSpacing="20dp" android:stretchMode="columnWidth"
+        android:verticalSpacing="10dp" android:stretchMode="columnWidth"
         >
     </GridView>
-
+    <ImageButton
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:text="Add"
+        android:id="@+id/ibtnAddTimetable"
+        android:src="@drawable/icon_add_floating"
+        android:background="@drawable/floating_action_button"
+        android:layout_gravity="center_horizontal" android:layout_marginTop="30dp"
+        android:onClick="onAddTimetableClick"
+        />
 
 
 </LinearLayout>

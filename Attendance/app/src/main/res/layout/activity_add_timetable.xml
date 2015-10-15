@@ -1,0 +1,265 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                tools:context="att.attendanceapp.AddTimetable">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Course"
+        android:id="@+id/tvAddTimetableCourse"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spnAddTimetableCourse"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/tvAddTimetableCourse"
+        android:layout_toEndOf="@+id/tvAddTimetableCourse"/>
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spnAddTimetableCourse"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/radioGroupTimetable" android:layout_marginBottom="20dp">
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="One time only" android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/rbtnAddTimetableOneTime"
+            android:layout_below="@+id/spnAddTimetableCourse"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" android:onClick="oneTimeOnlyClicked"/>
+
+        <RadioButton
+            android:layout_width="wrap_content" android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:text="Occures on every" android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/rbtnAddTimetableOccuresEvery"
+            android:layout_below="@+id/rbtnAddTimetableOneTime"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" android:onClick="repeatOccuranceClicked"/>
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="OR"
+        android:id="@+id/tvAddTimetableOr"
+        android:layout_below="@+id/spnAddTimetableCourse"
+        android:layout_toRightOf="@+id/radioGroupTimetable"
+        android:layout_toEndOf="@+id/radioGroupTimetable"/>
+
+    <CheckBox android:checked="false"
+        android:layout_width="@dimen/timetable_btn_width"
+        android:layout_height="@dimen/timetable_btn_height"
+        android:text="M"
+        android:background="@drawable/timetable_buttons"  android:gravity="center"
+        android:button="@android:color/transparent"
+        android:id="@+id/chkAddTimetableMon"
+        android:layout_below="@+id/radioGroupTimetable"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <CheckBox
+        android:layout_width="@dimen/timetable_btn_width"
+        android:layout_height="@dimen/timetable_btn_height"
+        android:text="T"
+        android:id="@+id/chkAddTimetableTue"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/timetable_buttons"  android:gravity="center"
+        android:button="@android:color/transparent"
+        android:layout_below="@+id/radioGroupTimetable"
+        android:layout_toRightOf="@+id/chkAddTimetableMon"
+        android:layout_toEndOf="@+id/chkAddTimetableMon"/>
+
+    <CheckBox
+        android:layout_width="@dimen/timetable_btn_width"
+        android:layout_height="@dimen/timetable_btn_height"
+        android:text="W"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/timetable_buttons"  android:gravity="center"
+        android:button="@android:color/transparent"
+        android:layout_below="@+id/radioGroupTimetable"
+        android:id="@+id/chkAddTimetableWed"
+        android:layout_toRightOf="@+id/chkAddTimetableTue"
+        android:layout_toEndOf="@+id/chkAddTimetableTue"/>
+
+    <CheckBox
+        android:layout_width="@dimen/timetable_btn_width"
+        android:layout_height="@dimen/timetable_btn_height"
+        android:text="T"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/timetable_buttons"  android:gravity="center"
+        android:button="@android:color/transparent"
+        android:layout_below="@+id/radioGroupTimetable"
+        android:id="@+id/chkAddTimetableThu"
+        android:layout_toRightOf="@+id/chkAddTimetableWed"
+        android:layout_toEndOf="@+id/chkAddTimetableWed"/>
+
+    <CheckBox
+        android:layout_width="@dimen/timetable_btn_width"
+        android:layout_height="@dimen/timetable_btn_height"
+        android:text="F"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/timetable_buttons"  android:gravity="center"
+        android:button="@android:color/transparent"
+        android:layout_below="@+id/radioGroupTimetable"
+        android:id="@+id/chkAddTimetableFri"
+        android:layout_toRightOf="@+id/chkAddTimetableThu"
+        android:layout_toEndOf="@+id/chkAddTimetableThu"/>
+
+    <CheckBox
+        android:layout_width="@dimen/timetable_btn_width"
+        android:layout_height="@dimen/timetable_btn_height"
+        android:text="S"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/timetable_buttons"  android:gravity="center"
+        android:button="@android:color/transparent"
+        android:layout_below="@+id/radioGroupTimetable"
+        android:id="@+id/chkAddTimetableSat"
+        android:layout_toRightOf="@+id/chkAddTimetableFri"
+        android:layout_toEndOf="@+id/chkAddTimetableFri"/>
+
+    <CheckBox
+        android:layout_width="@dimen/timetable_btn_width"
+        android:layout_height="@dimen/timetable_btn_height"
+        android:text="S"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/timetable_buttons"  android:gravity="center"
+        android:button="@android:color/transparent"
+        android:layout_below="@+id/radioGroupTimetable"
+        android:id="@+id/chkAddTimetableSun"
+        android:layout_toRightOf="@+id/chkAddTimetableSat"
+        android:layout_toEndOf="@+id/chkAddTimetableSat"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="From time:"
+        android:id="@+id/tvAddtimetableFromTitle"
+        android:layout_below="@id/chkAddTimetableMon"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="20dp"  android:layout_marginRight="10dp"
+        />
+    <EditText
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:enabled="false"
+        android:id="@+id/tvAddtimetableFromTime"
+        android:layout_toRightOf="@+id/tvAddtimetableFromTitle"
+        android:layout_toEndOf="@+id/tvAddtimetableFromTitle"
+         android:layout_alignBaseline="@+id/tvAddtimetableFromTitle"
+       />
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ibtnAddTimetableFromTime"
+        android:src="@drawable/icon_add_time"
+        android:layout_toRightOf="@+id/tvAddtimetableFromTime"
+        android:layout_toEndOf="@+id/tvAddtimetableFromTime" android:layout_alignBottom="@id/tvAddtimetableFromTitle"
+        android:layout_centerHorizontal="true" android:onClick="onFromTimeClicked"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="To time:"
+        android:id="@+id/tvAddtimetableToTitle"
+        android:layout_below="@id/tvAddtimetableFromTitle" android:layout_alignParentLeft="true"
+        android:layout_marginTop="20dp" android:layout_marginRight="30dp"
+        />
+    <EditText
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:enabled="false"
+        android:id="@+id/tvAddtimetableToTime"
+        android:layout_toRightOf="@+id/tvAddtimetableToTitle"
+        android:layout_toEndOf="@+id/tvAddtimetableToTitle" android:layout_alignBaseline="@id/tvAddtimetableToTitle"/>
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ibtnAddTimetableToTime"
+        android:src="@drawable/icon_add_time"
+        android:layout_toRightOf="@+id/tvAddtimetableToTime"
+        android:layout_toEndOf="@+id/tvAddtimetableToTime" android:layout_alignBottom="@id/tvAddtimetableToTitle"
+        android:layout_centerHorizontal="true" android:onClick="onToTimeClicked"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="From date"
+        android:id="@+id/tvAddTimetableFromDate"
+        android:layout_below="@+id/tvAddtimetableToTitle"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"/>
+
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/etAddTimetableFromDate"
+        android:layout_below="@+id/tvAddTimetableFromDate"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" android:enabled="false"/>
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ibtnAddTimetableFromDate"
+        android:layout_alignTop="@+id/etAddTimetableFromDate"
+        android:layout_toRightOf="@+id/etAddTimetableFromDate"
+        android:layout_toEndOf="@+id/etAddTimetableFromDate"
+        android:src="@drawable/icon_calendar" android:onClick="setFromDate"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="To date"
+        android:id="@+id/tvAddTimetableToDate"
+        android:layout_below="@+id/etAddTimetableFromDate"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"/>
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/etAddTimetableToDate"
+        android:layout_below="@+id/tvAddTimetableToDate"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" android:enabled="false"/>
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ibtnAddTimetableToDate" android:onClick="setToDate"
+        android:layout_alignTop="@+id/etAddTimetableToDate"
+        android:layout_toRightOf="@+id/etAddTimetableToDate"
+        android:layout_toEndOf="@+id/etAddTimetableToDate"
+        android:src="@drawable/icon_calendar"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ok" android:onClick="onOkClick"
+        android:id="@+id/btnAddAddTimetable"
+        android:layout_below="@+id/etAddTimetableToDate"
+        android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
+        />
+
+</RelativeLayout>

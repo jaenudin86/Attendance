@@ -1,6 +1,7 @@
 package att.attendanceapp;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -77,6 +78,7 @@ public class ManageCourses extends ActivityBaseClass
             courseArrayList.add((Course) data.getSerializableExtra("newCourse"));
             CourseListAdapter adapter=(CourseListAdapter)courseList.getAdapter();
             adapter.notifyDataSetChanged();
+            courseList.smoothScrollToPosition(courseArrayList.size() - 1);
         }
         else if(requestCode == EDIT_CODE && resultCode == Activity.RESULT_OK)
         {
@@ -88,9 +90,19 @@ public class ManageCourses extends ActivityBaseClass
     }
     class GetCourses extends AsyncTask<String, Void, String>
     {
+        private ProgressDialog progressDialog;
         InputStream is = null;
         String response = "";
         String returnString="";
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog=new ProgressDialog(ManageCourses.this);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setTitle("Loading...");
+            progressDialog.setMessage("Please wait");
+            progressDialog.show();
+        }
         @Override
         protected String doInBackground(String... params)
         {
@@ -132,6 +144,9 @@ public class ManageCourses extends ActivityBaseClass
 
         protected void onPostExecute(String v)
         {
+            if (progressDialog!=null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
             super.onPostExecute(v);
             // no exception found on previous call
             if(!v.toLowerCase().contains("exception"))

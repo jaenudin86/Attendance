@@ -19,10 +19,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HolidayView"
-            android:label="@string/title_activity_holiday_view" >
-        </activity>
-        <activity
             android:name=".AddCourse"
             android:label="@string/title_activity_add_course" >
         </activity>
@@ -57,6 +53,10 @@
         <activity
             android:name=".MyTimetable"
             android:label="@string/title_activity_my_timetable" >
+        </activity>
+        <activity
+            android:name=".AddTimetable"
+            android:label="@string/title_activity_add_timetable" >
         </activity>
     </application>
 

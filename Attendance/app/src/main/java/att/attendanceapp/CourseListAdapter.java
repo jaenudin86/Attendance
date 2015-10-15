@@ -1,11 +1,15 @@
 package att.attendanceapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
@@ -26,7 +30,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Type;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -82,19 +86,20 @@ public class CourseListAdapter  extends BaseAdapter
     @Override
     public View getView(final int position, View convertView, ViewGroup parent)
     {
-        View row=convertView;
+        View view=convertView;
         ViewHolder holder=null;
-        if(row==null)
+        if(view==null)
         {
             LayoutInflater inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row=inflater.inflate(R.layout.course_view_adapter,parent, false);
-            holder=new ViewHolder(row);
-            row.setTag(holder);
+            view=inflater.inflate(R.layout.course_view_adapter,parent, false);
+            holder=new ViewHolder(view);
+            view.setTag(holder);
         }
         else
         {
-            holder=(ViewHolder)row.getTag();
+            holder=(ViewHolder)view.getTag();
         }
+        final View row=view;
         final Course obj = courses.get(position);
         holder.courseCode.setText(obj.getCourseCode());
         holder.courseName.setText(obj.getCoursename());
@@ -103,14 +108,62 @@ public class CourseListAdapter  extends BaseAdapter
             @Override
             public void onClick(View v)
             {
-                courses.remove(position);
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                alertDialog.setTitle("Delete alert");
+                alertDialog.setMessage("Are you sure you want to delete this?");
+                alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        Course itemToRemove=courses.get(position);
+                        Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_out_right);
+                        animation.setDuration(1000);
+                        deleteOnAnimationComplete(animation, itemToRemove);
+                        row.startAnimation(animation);
+                    }
+                });
+                alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        dialog.dismiss();
+                    }
+                });
+                alertDialog.show();
+
+            }
+        });
+        if(obj.shouldAnimateOnAdd == true)
+        {
+            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
+            animation.setDuration(1000);
+            row.startAnimation(animation);
+            obj.shouldAnimateOnAdd =false;
+        }
+        return row;
+    }
+    private void deleteOnAnimationComplete(Animation myAnimation, final Course obj) {
+        myAnimation.setAnimationListener(new Animation.AnimationListener()
+        {
+            @Override
+            public void onAnimationStart(Animation animation)
+            {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation)
+            {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation)
+            {
+                courses.remove(obj);
                 notifyDataSetChanged();
                 new DeleteCourse().execute(obj.getFacilitatorId(), obj.getCourseCode());
             }
         });
-        return row;
     }
-
     class DeleteCourse extends AsyncTask<String, Void, String>
     {
         InputStream is = null;

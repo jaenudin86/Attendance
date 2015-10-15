@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -55,14 +57,14 @@ public class ManageHolidays extends ActivityBaseClass
     {
         position=pos;
         //HolidayListAdapter adap=(HolidayListAdapter)holidayList.getAdapter();
-        Holiday selectedCourse=(Holiday)holidayListAdapter.getItem(pos);
+        Holiday selectedHoliday=(Holiday)holidayListAdapter.getItem(pos);
         //Toast.makeText(this,selectedCourse.getCourseCode(),Toast.LENGTH_LONG).show();
 
         Intent intent = new Intent(this,EditHoliday.class);
-        intent.putExtra("selectedHolidayName", selectedCourse.getHolidayName());
-        intent.putExtra("selectedHolidayFrom", Helper.convertDate(selectedCourse.getFromDate()));
-        intent.putExtra("selectedHolidayTo", Helper.convertDate(selectedCourse.getToDate()));
-        intent.putExtra("selectedHoliday", selectedCourse.getId());
+        intent.putExtra("selectedHolidayName", selectedHoliday.getHolidayName());
+        intent.putExtra("selectedHolidayFrom", Helper.convertDate(selectedHoliday.getFromDate()));
+        intent.putExtra("selectedHolidayTo", Helper.convertDate(selectedHoliday.getToDate()));
+        intent.putExtra("selectedHoliday", selectedHoliday.getId());
         startActivityForResult(intent, EDIT_CODE);
     }
     public void onAddHolidayClick(View view)
@@ -81,6 +83,8 @@ public class ManageHolidays extends ActivityBaseClass
             holidayArrayList.add((Holiday) data.getSerializableExtra("newHoliday"));
             HolidayListAdapter adapter=(HolidayListAdapter)holidayList.getAdapter();
             adapter.notifyDataSetChanged();
+            holidayList.smoothScrollToPosition(holidayArrayList.size()-1);
+
         }
         else if(requestCode == EDIT_CODE && resultCode == Activity.RESULT_OK)
         {

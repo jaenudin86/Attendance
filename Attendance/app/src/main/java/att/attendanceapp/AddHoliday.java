@@ -5,15 +5,11 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -107,6 +103,7 @@ public class AddHoliday extends ActivityBaseClass
         String fromDate =sdf.format(fromDateCalendar.getTime());
         String toDate =sdf.format(toDateCalendar.getTime());
         Holiday holiday=new Holiday(holidayName.getText().toString(),fromDate,toDate,facilitator);
+        holiday.shouldAnimateOnAdd =true;
         new HolidayTask().execute(holiday);
     }
     class HolidayTask extends AsyncTask<Holiday, String, Void>

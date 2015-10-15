@@ -11,6 +11,7 @@ public class Course implements Serializable
     private String course_name;
     private String course_description;
     private String facilitator_id;
+    public boolean shouldAnimateOnAdd =false;
     public Course(String course_code,String course_name,String course_description,String facilitator_id)
     {
         this.course_code=course_code;
