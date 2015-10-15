@@ -51,6 +51,7 @@ Journal entry for 15th Oct, 2015
 What I have done:
 ->Created customized calendar
 ->created add calendar activity with selecter xml - defining state of checkboxed buttons
+->added animations, alert dialog on delete and progress spinner while item is loading
 
 Plan for next week:
 Finishing my time table
