@@ -258,8 +258,8 @@
         android:layout_height="wrap_content"
         android:text="Ok" android:onClick="onOkClick"
         android:id="@+id/btnAddAddTimetable"
-        android:layout_below="@+id/etAddTimetableToDate"
-        android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
-        />
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/spnAddTimetableCourse"
+        android:layout_alignEnd="@+id/spnAddTimetableCourse"/>
 
 </RelativeLayout>

@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.text.AndroidCharacter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,8 +90,8 @@ public class HolidayListAdapter  extends BaseAdapter
         final View row=view;
         final Holiday obj = holidays.get(position);
         holder.holidayName.setText(obj.getHolidayName());
-        holder.from.setText(Helper.convertDate(obj.getFromDate().toString()));
-        holder.to.setText(Helper.convertDate(obj.getToDate().toString()));
+        holder.from.setText(Helper.convertDateFromSQLToUS(obj.getFromDate().toString()));
+        holder.to.setText(Helper.convertDateFromSQLToUS(obj.getToDate().toString()));
         holder.delete.setOnClickListener(new View.OnClickListener()
         {
             @Override

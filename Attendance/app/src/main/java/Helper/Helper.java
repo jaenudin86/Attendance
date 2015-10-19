@@ -49,13 +49,26 @@ public class Helper
         }
         return sdf.format(date);
     }
-    public static String convertDate(String date)
+    public static String convertDateFromSQLToUS(String date)
     {
         String formattedDate="";
         try
         {
             DateFormat originalFormat = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
             DateFormat targetFormat = new SimpleDateFormat("mm/dd/yyyy");
+            Date dt = originalFormat.parse(date);
+            formattedDate = targetFormat.format(dt);
+        }
+        catch (Exception ex){}
+        return formattedDate;
+    }
+    public static String convertDateFromUSToSQL(String date)
+    {
+        String formattedDate="";
+        try
+        {
+            DateFormat originalFormat = new SimpleDateFormat("mm/dd/yyyy", Locale.ENGLISH);
+            DateFormat targetFormat = new SimpleDateFormat("yyyy-mm-dd");
             Date dt = originalFormat.parse(date);
             formattedDate = targetFormat.format(dt);
         }

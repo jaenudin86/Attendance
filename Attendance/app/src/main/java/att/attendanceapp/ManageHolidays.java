@@ -7,8 +7,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -62,8 +60,8 @@ public class ManageHolidays extends ActivityBaseClass
 
         Intent intent = new Intent(this,EditHoliday.class);
         intent.putExtra("selectedHolidayName", selectedHoliday.getHolidayName());
-        intent.putExtra("selectedHolidayFrom", Helper.convertDate(selectedHoliday.getFromDate()));
-        intent.putExtra("selectedHolidayTo", Helper.convertDate(selectedHoliday.getToDate()));
+        intent.putExtra("selectedHolidayFrom", Helper.convertDateFromSQLToUS(selectedHoliday.getFromDate()));
+        intent.putExtra("selectedHolidayTo", Helper.convertDateFromSQLToUS(selectedHoliday.getToDate()));
         intent.putExtra("selectedHoliday", selectedHoliday.getId());
         startActivityForResult(intent, EDIT_CODE);
     }
