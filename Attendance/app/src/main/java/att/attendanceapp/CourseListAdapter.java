@@ -3,6 +3,7 @@ package att.attendanceapp;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -56,13 +57,14 @@ public class CourseListAdapter  extends BaseAdapter
         TextView courseCode;
         TextView courseName;
         //TextView description;
-        ImageButton delete;
+        ImageButton delete,add;
         ViewHolder(View view)
         {
             courseCode=(TextView)view.findViewById(R.id.tvAdapterCourseCode);
             courseName=(TextView)view.findViewById(R.id.tvAdapterCourseName);
             //description=(TextView)view.findViewById(R.id.tvAdapterCourseDescription);
             delete=(ImageButton)view.findViewById(R.id.ibtnCourseDelete);
+            add=(ImageButton)view.findViewById(R.id.ibtnCourseAddAttendee);
         }
     }
     @Override
@@ -140,6 +142,16 @@ public class CourseListAdapter  extends BaseAdapter
             row.startAnimation(animation);
             obj.shouldAnimateOnAdd =false;
         }
+        holder.add.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent=new Intent(context,ManageAttendees.class);
+                intent.putExtra("courseCode",obj.getCourseCode());
+                context.startActivity(intent);
+            }
+        });
         return row;
     }
     private void deleteOnAnimationComplete(Animation myAnimation, final Course obj) {

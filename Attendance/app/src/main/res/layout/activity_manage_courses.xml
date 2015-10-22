@@ -14,6 +14,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="20dp" android:divider="@color/mainColor" android:dividerHeight="1dp"
+        android:paddingBottom="40dp"
         />
     <ImageButton
                  android:layout_width="60dp"
@@ -23,7 +24,10 @@
                  android:src="@drawable/icon_add_floating"
                  android:background="@drawable/floating_action_button"
                  android:layout_alignParentBottom="true"
-                 android:layout_centerHorizontal="true"
-                 android:layout_marginBottom="24dp" android:onClick="onAddCourseClick"
+                 android:layout_alignParentRight="true"
+                 android:layout_marginBottom="20dp"
+                 android:elevation="4dp"
+                 android:onClick="onAddCourseClick"
+
                 />
 </RelativeLayout>

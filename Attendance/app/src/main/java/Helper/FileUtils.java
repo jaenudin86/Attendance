@@ -5,7 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.provider.MediaStore;
+import android.support.v4.app.NotificationCompatSideChannelService;
 import android.util.Log;
+import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -37,27 +40,34 @@ public class FileUtils
             Toast.makeText(context, "Please install a File Manager.", Toast.LENGTH_SHORT).show();
         }
     }
-    public static String readFile(String path)
+    public static String readFile(String path,String allowedExtn)
     {
         String fileContent="";
         try
         {
             File file = new File(path);
-
-            InputStream is = new FileInputStream(file);
-            Reader reader = new InputStreamReader(is);
-            BufferedReader bufferedReader = new BufferedReader(reader);
-            String line;
-            while ((line = bufferedReader.readLine())!=null)
+            if(allowedExtn.equals(MimeTypeMap.getFileExtensionFromUrl(path)))
             {
-                fileContent+= line+"\n"; //coz each attendee is on separate line
+                InputStream is = new FileInputStream(file);
+                Reader reader = new InputStreamReader(is);
+                BufferedReader bufferedReader = new BufferedReader(reader);
+                String line;
+                while ((line = bufferedReader.readLine()) != null)
+                {
+                    fileContent += line + "\n"; //coz each attendee is on separate line
+                }
+                reader.close();
+                is.close();
             }
-            reader.close();
-            is.close();
+            else
+            {
+                fileContent="Wrong extension";
+            }
         }
         catch(Exception ex)
         {
             Log.e(TAG,ex.getMessage());
+            fileContent="Exception:"+ex.toString();
         }
         return fileContent;
     }

@@ -74,43 +74,13 @@ public class MainActivity extends ActivityBaseClass
         // should be AlarmManager.INTERVAL_DAY (but changed to 15min for testing)
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, updateTime.getTimeInMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
     }
-    private static final int FILE_SELECT_CODE = 0;
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case FILE_SELECT_CODE:
-                if (resultCode == RESULT_OK) {
-                    // Get the Uri of the selected file
-                    Uri uri = data.getData();
-                    try
-                    {
-                        // Get the path
-                        String path = FileUtils.getPath(this, uri);
-                        String fileContent=FileUtils.readFile(path);
-                        String[] attendeeCourses=fileContent.split("\n");
-                        ArrayList<String> attendees=new ArrayList<String>();
-                        ArrayList<String> courseCodes=new ArrayList<String>();
-                        for (String item:attendeeCourses)
-                        {
-                            attendees.add(item.split(",")[0]);
-                            courseCodes.add(item.split(",")[1]);
-                        }
-                    }
-                    catch(Exception ex)
-                    {
-                        Toast.makeText(this,"Unable retrieve file,"+ex.toString(),Toast.LENGTH_LONG).show();
-                    }
-                }
-                break;
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
+
 
     void changeIntent(int pos,String itemName)
     {
         if(pos==0)
         {
-            FileUtils.showFileChooser(this,this);
+            //FileUtils.showFileChooser(this,this);
         }
         if(pos==1)
         {

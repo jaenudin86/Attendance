@@ -23,11 +23,15 @@
 
                 />
 
-
     <ImageButton
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:layout_weight="0.3"
+        android:id="@+id/ibtnCourseAddAttendee" android:src="@drawable/icon_add_people"  />
+    <ImageButton
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="0.2"
         android:id="@+id/ibtnCourseDelete" android:src="@drawable/icon_delete"  />
 
 </LinearLayout>

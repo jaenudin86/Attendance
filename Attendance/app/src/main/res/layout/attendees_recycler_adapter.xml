@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Attendee number" android:layout_alignParentTop="true" android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/tvManageAttendeeNumber"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Attendee id"
+        android:layout_below="@+id/tvManageAttendeeNumber"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/tvManageAttendeeId"/>
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ibtnManageAttendeeDelete"
+
+        android:layout_alignParentEnd="true" android:layout_alignParentRight="true"
+        android:src="@drawable/icon_delete"/>
+    <View
+        android:layout_width="match_parent" android:layout_marginTop="10dp" android:layout_marginBottom="5dp"
+        android:layout_height="1dp" android:background="@color/mainColor"
+        android:layout_below="@+id/tvManageAttendeeId"/>
+
+</RelativeLayout>

@@ -67,6 +67,10 @@
             android:name=".ManageMySchedule"
             android:label="@string/title_activity_manage_my_schedule" >
         </activity>
+        <activity
+            android:name=".ManageAttendees"
+            android:label="@string/title_activity_manage_attendees" >
+        </activity>
     </application>
 
 </manifest>
