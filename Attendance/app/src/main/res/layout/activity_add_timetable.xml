@@ -65,18 +65,18 @@
     <CheckBox android:checked="false"
         android:layout_width="@dimen/timetable_btn_width"
         android:layout_height="@dimen/timetable_btn_height"
-        android:text="M"
+        android:text="M" android:tag="mon"
         android:background="@drawable/timetable_buttons"  android:gravity="center"
         android:button="@android:color/transparent"
         android:id="@+id/chkAddTimetableMon"
         android:layout_below="@+id/radioGroupTimetable"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true" />
 
     <CheckBox
         android:layout_width="@dimen/timetable_btn_width"
         android:layout_height="@dimen/timetable_btn_height"
-        android:text="T"
+        android:text="T" android:tag="tue"
         android:id="@+id/chkAddTimetableTue"
         android:layout_marginLeft="10dp"
         android:background="@drawable/timetable_buttons"  android:gravity="center"
@@ -88,7 +88,7 @@
     <CheckBox
         android:layout_width="@dimen/timetable_btn_width"
         android:layout_height="@dimen/timetable_btn_height"
-        android:text="W"
+        android:text="W" android:tag="wed"
         android:layout_marginLeft="10dp"
         android:background="@drawable/timetable_buttons"  android:gravity="center"
         android:button="@android:color/transparent"
@@ -100,7 +100,7 @@
     <CheckBox
         android:layout_width="@dimen/timetable_btn_width"
         android:layout_height="@dimen/timetable_btn_height"
-        android:text="T"
+        android:text="T" android:tag="thu"
         android:layout_marginLeft="10dp"
         android:background="@drawable/timetable_buttons"  android:gravity="center"
         android:button="@android:color/transparent"
@@ -112,7 +112,7 @@
     <CheckBox
         android:layout_width="@dimen/timetable_btn_width"
         android:layout_height="@dimen/timetable_btn_height"
-        android:text="F"
+        android:text="F" android:tag="fri"
         android:layout_marginLeft="10dp"
         android:background="@drawable/timetable_buttons"  android:gravity="center"
         android:button="@android:color/transparent"
@@ -124,7 +124,7 @@
     <CheckBox
         android:layout_width="@dimen/timetable_btn_width"
         android:layout_height="@dimen/timetable_btn_height"
-        android:text="S"
+        android:text="S" android:tag="sat"
         android:layout_marginLeft="10dp"
         android:background="@drawable/timetable_buttons"  android:gravity="center"
         android:button="@android:color/transparent"
@@ -136,7 +136,7 @@
     <CheckBox
         android:layout_width="@dimen/timetable_btn_width"
         android:layout_height="@dimen/timetable_btn_height"
-        android:text="S"
+        android:text="S" android:tag="sun"
         android:layout_marginLeft="10dp"
         android:background="@drawable/timetable_buttons"  android:gravity="center"
         android:button="@android:color/transparent"

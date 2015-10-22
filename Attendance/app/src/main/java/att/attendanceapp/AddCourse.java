@@ -1,17 +1,12 @@
 package att.attendanceapp;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -25,7 +20,7 @@ import java.net.URLEncoder;
 
 import DBHelper.Course;
 
-import Helper.Helper;
+import Helper.HelperMethods;
 
 public class AddCourse extends ActivityBaseClass
 {
@@ -40,7 +35,7 @@ public class AddCourse extends ActivityBaseClass
         courseCode=(EditText)findViewById(R.id.etAddCourseCourseCode);
         courseName=(EditText)findViewById(R.id.etAddCourseCourseName);
         description=(EditText)findViewById(R.id.etAddCourseDescription);
-        facilitator=Helper.getCurrentLoggedinUser(this);
+        facilitator= HelperMethods.getCurrentLoggedinUser(this);
 
     }
     public void onOkClick(View view)

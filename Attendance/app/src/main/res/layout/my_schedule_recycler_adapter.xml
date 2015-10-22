@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Course code" android:layout_alignParentTop="true" android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/tvMyScheduleCourseCode"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Start date"
+        android:layout_below="@+id/tvMyScheduleCourseCode"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/tvMyScheduleStartDate"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="-"
+        android:layout_toRightOf="@+id/tvMyScheduleStartDate" android:layout_toEndOf="@+id/tvMyScheduleStartDate"
+        android:layout_below="@+id/tvMyScheduleCourseCode"
+        android:id="@+id/tvDash"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="End date" android:layout_below="@+id/tvMyScheduleCourseCode"
+        android:layout_toRightOf="@+id/tvDash" android:layout_toEndOf="@+id/tvDash"
+        android:id="@+id/tvMyScheduleEndDate"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Start time"
+        android:layout_below="@+id/tvMyScheduleStartDate"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/tvMyScheduleStartTime"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="-" android:layout_below="@+id/tvMyScheduleStartDate"
+        android:layout_toRightOf="@+id/tvMyScheduleStartTime" android:layout_toEndOf="@+id/tvMyScheduleStartTime"
+        android:id="@+id/tvDash1"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="End date" android:layout_below="@+id/tvMyScheduleStartDate"
+        android:layout_toRightOf="@+id/tvDash1" android:layout_toEndOf="@+id/tvDash1"
+        android:id="@+id/tvMyScheduleEndTime"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Recurring on"
+        android:layout_below="@+id/tvMyScheduleEndTime"
+        android:id="@+id/tvMyScheduleRecurringDays"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ibtnMyScheduleDelete"
+
+        android:layout_alignParentEnd="true" android:layout_alignParentRight="true"
+        android:src="@drawable/icon_delete"/>
+
+    <View
+        android:layout_width="match_parent" android:layout_marginTop="10dp" android:layout_marginBottom="5dp"
+        android:layout_height="1dp" android:background="@color/mainColor"
+        android:layout_below="@+id/tvMyScheduleRecurringDays"/>
+
+</RelativeLayout>

@@ -27,7 +27,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import DBHelper.Holiday;
-import Helper.Helper;
+import Helper.HelperMethods;
 
 public class ManageHolidays extends ActivityBaseClass
 {
@@ -60,8 +60,8 @@ public class ManageHolidays extends ActivityBaseClass
 
         Intent intent = new Intent(this,EditHoliday.class);
         intent.putExtra("selectedHolidayName", selectedHoliday.getHolidayName());
-        intent.putExtra("selectedHolidayFrom", Helper.convertDateFromSQLToUS(selectedHoliday.getFromDate()));
-        intent.putExtra("selectedHolidayTo", Helper.convertDateFromSQLToUS(selectedHoliday.getToDate()));
+        intent.putExtra("selectedHolidayFrom", HelperMethods.convertDateFromSQLToUS(selectedHoliday.getFromDate()));
+        intent.putExtra("selectedHolidayTo", HelperMethods.convertDateFromSQLToUS(selectedHoliday.getToDate()));
         intent.putExtra("selectedHoliday", selectedHoliday.getId());
         startActivityForResult(intent, EDIT_CODE);
     }

@@ -1,39 +1,20 @@
 package att.attendanceapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 import DBHelper.Holiday;
-import Helper.Helper;
+import DBHelper.TimetableSlot;
 
 /**
  * Created by rujoota on 12-10-2015.
@@ -50,8 +31,9 @@ public class CalendarAdapter extends BaseAdapter
     private Button gridcell;
     String[] day_color;
     ArrayList<Holiday> holidayArrayList=new ArrayList<Holiday>();
+    ArrayList<TimetableSlot> timetableSlotList=new ArrayList<TimetableSlot>();
     int position;
-    public CalendarAdapter(Context context,int month,int year,ArrayList<Holiday> list)
+    public CalendarAdapter(Context context,int month,int year,ArrayList<Holiday> list,ArrayList<TimetableSlot> slots)
     {
         this.context=context;
         this.month=month;
@@ -60,6 +42,7 @@ public class CalendarAdapter extends BaseAdapter
         currentDayOfMonth=calendar.get(Calendar.DAY_OF_MONTH);
         currentWeekDay = calendar.get(Calendar.DAY_OF_WEEK);
         this.holidayArrayList=list;
+        this.timetableSlotList=slots;
         // printing a day
         printMonth(month, year);
     }
@@ -129,7 +112,7 @@ public class CalendarAdapter extends BaseAdapter
         // Prev Month days
         for (int i = 0; i < trailingSpaces-1; i++)
         {
-            daysList.add(String.valueOf((daysInPrevMonth - trailingSpaces + 2 + i) + "-GREY" + "-" + prevMonth + "-" + prevYear));
+            daysList.add(String.valueOf((daysInPrevMonth - trailingSpaces + 2 + i) + "-GREY" + "-" + (prevMonth+1) + "-" + prevYear));
         }
         Calendar now = Calendar.getInstance();
         // Current Month Days
@@ -137,17 +120,17 @@ public class CalendarAdapter extends BaseAdapter
         {
             if (i == currentDayOfMonth && currentMonth==now.get(Calendar.MONTH))
             {
-                daysList.add(String.valueOf(i) + "-YELLOW" + "-" + currentMonth + "-" + yy);
+                daysList.add(String.valueOf(i) + "-YELLOW" + "-" + (currentMonth+1) + "-" + yy);
             }
             else
             {
-                daysList.add(String.valueOf(i) + "-BLACK" + "-" + currentMonth + "-" + yy);
+                daysList.add(String.valueOf(i) + "-WHITE" + "-" + (currentMonth+1) + "-" + yy);
             }
         }
         // Next Month days
         for (int i = 0; i < daysList.size() % 7; i++)
         {
-            daysList.add(String.valueOf(i + 1) + "-GREY" + "-" + nextMonth + "-" + nextYear);
+            daysList.add(String.valueOf(i + 1) + "-GREY" + "-" + (nextMonth+1) + "-" + nextYear);
         }
     }
 
@@ -187,12 +170,12 @@ public class CalendarAdapter extends BaseAdapter
         String theyear = day_color[3];
         // Set the Day GridCell
         gridcell.setText(theday);
-        gridcell.setTag(theday + "-" + themonth + "-" + theyear);
+        gridcell.setTag(theyear + "-" + themonth + "-" + theday);
         if(day_color[1].equals("GREY"))
         {
             gridcell.setBackgroundColor(Color.LTGRAY);
         }
-        if (day_color[1].equals("BLACK"))
+        if (day_color[1].equals("WHITE"))
         {
             gridcell.setBackgroundColor(Color.WHITE);
         }
@@ -202,16 +185,33 @@ public class CalendarAdapter extends BaseAdapter
         }
         for(int i=0;i<holidayArrayList.size();i++)
         {
-            Date currentPrintingDate = new Date(Integer.parseInt(theyear), Integer.parseInt(themonth)+1, Integer.parseInt(theday));
-            String dt[]=holidayArrayList.get(i).getFromDate().split("-");
-            Date fromDate=new Date(Integer.parseInt(dt[0]),Integer.parseInt(dt[1]),Integer.parseInt(dt[2]));
-            if (currentPrintingDate.equals(fromDate))
+            Date currentPrintingDate = new Date(Integer.parseInt(theyear), Integer.parseInt(themonth), Integer.parseInt(theday));
+            String startdt[]=holidayArrayList.get(i).getFromDate().split("-");
+            String enddt[]=holidayArrayList.get(i).getToDate().split("-");
+            Date fromDate=new Date(Integer.parseInt(startdt[0]),Integer.parseInt(startdt[1]),Integer.parseInt(startdt[2]));
+            Date toDate=new Date(Integer.parseInt(enddt[0]),Integer.parseInt(enddt[1]),Integer.parseInt(enddt[2]));
+            if ((currentPrintingDate.equals(fromDate) || currentPrintingDate.after(fromDate)) && (currentPrintingDate.equals(toDate) || currentPrintingDate.before(toDate)))
             {
                 //gridcell.setBackgroundResource(R.drawable.square_item);
                 gridcell.setBackgroundResource(R.color.holiday);
+                gridcell.setEnabled(false);
+                break;
+            }
+        }
+        for(int i=0;i<timetableSlotList.size();i++)
+        {
+            Date currentPrintingDate = new Date(Integer.parseInt(theyear), Integer.parseInt(themonth), Integer.parseInt(theday));
+            String startdt[]=timetableSlotList.get(i).getDate().split("-");
+
+            Date fromDate=new Date(Integer.parseInt(startdt[0]),Integer.parseInt(startdt[1]),Integer.parseInt(startdt[2]));
+
+            if (currentPrintingDate.equals(fromDate))
+            {
+                gridcell.setBackgroundResource(R.color.attendanceNotFilled);
                 break;
             }
         }
         return row;
     }
+
 }

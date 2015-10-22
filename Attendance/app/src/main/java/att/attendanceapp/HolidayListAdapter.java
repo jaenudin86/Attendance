@@ -24,7 +24,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import DBHelper.Holiday;
-import Helper.Helper;
+import Helper.HelperMethods;
 
 /**
  * Created by rujoota on 08-10-2015.
@@ -90,8 +90,8 @@ public class HolidayListAdapter  extends BaseAdapter
         final View row=view;
         final Holiday obj = holidays.get(position);
         holder.holidayName.setText(obj.getHolidayName());
-        holder.from.setText(Helper.convertDateFromSQLToUS(obj.getFromDate().toString()));
-        holder.to.setText(Helper.convertDateFromSQLToUS(obj.getToDate().toString()));
+        holder.from.setText(HelperMethods.convertDateFromSQLToUS(obj.getFromDate().toString()));
+        holder.to.setText(HelperMethods.convertDateFromSQLToUS(obj.getToDate().toString()));
         holder.delete.setOnClickListener(new View.OnClickListener()
         {
             @Override

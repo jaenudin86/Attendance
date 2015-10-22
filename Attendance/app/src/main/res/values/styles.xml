@@ -22,4 +22,5 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="holiday">#79daff</color>
+    <color name="attendanceNotFilled">#DF0000</color>
 </resources>

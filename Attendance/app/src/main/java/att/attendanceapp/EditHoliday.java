@@ -5,15 +5,10 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -29,7 +24,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import DBHelper.Holiday;
-import Helper.Helper;
+import Helper.HelperMethods;
 
 public class EditHoliday extends ActivityBaseClass
 {
@@ -43,7 +38,7 @@ public class EditHoliday extends ActivityBaseClass
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_holiday);
-        facilitator= Helper.getCurrentLoggedinUser(this);
+        facilitator= HelperMethods.getCurrentLoggedinUser(this);
         name=(EditText)findViewById(R.id.etEditHolidayName);
         from=(EditText)findViewById(R.id.etEditHolidayFromDate);
         to=(EditText)findViewById(R.id.etEditHolidayToDate);

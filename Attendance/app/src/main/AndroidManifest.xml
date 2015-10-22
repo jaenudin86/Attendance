@@ -3,6 +3,7 @@
     package="att.attendanceapp" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -57,6 +58,14 @@
         <activity
             android:name=".AddTimetable"
             android:label="@string/title_activity_add_timetable" >
+        </activity>
+        <activity
+            android:name=".ViewTimetable"
+            android:label="@string/title_activity_view_timetable" >
+        </activity>
+        <activity
+            android:name=".ManageMySchedule"
+            android:label="@string/title_activity_manage_my_schedule" >
         </activity>
     </application>
 

@@ -25,7 +25,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import DBHelper.Holiday;
-import Helper.Helper;
+import Helper.HelperMethods;
 
 public class AddHoliday extends ActivityBaseClass
 {
@@ -41,7 +41,7 @@ public class AddHoliday extends ActivityBaseClass
         holidayFromDate = (EditText) findViewById(R.id.etHolidayFromDate);
         holidayToDate = (EditText) findViewById(R.id.etHolidayToDate);
         holidayName =(EditText)findViewById(R.id.etHolidayName);
-        facilitator= Helper.getCurrentLoggedinUser(this);
+        facilitator= HelperMethods.getCurrentLoggedinUser(this);
     }
     Calendar fromDateCalendar = Calendar.getInstance();
     Calendar toDateCalendar = Calendar.getInstance();

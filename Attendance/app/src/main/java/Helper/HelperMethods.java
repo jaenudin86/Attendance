@@ -8,6 +8,7 @@ import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -16,13 +17,17 @@ import att.attendanceapp.R;
 /**
  * Created by rujoota on 08-10-2015.
  */
-public class Helper
+public class HelperMethods
 {
     static String sharedPrefFileName="userInfo";
     static String TAG="ATTENDANCE HELPER";
+    public static String convertToStandardTime(String time)
+    {
+        String arr[]=time.split(":");
+        return arr[0]+":"+arr[1];
+    }
     public static String convertDateToFormat(String date,String format)
     {
-
         Date dt=null;
         SimpleDateFormat sdf=null;
         try
@@ -37,7 +42,6 @@ public class Helper
     }
     public static String convertDateToFormat(Date date,String format)
     {
-
         SimpleDateFormat sdf=null;
         try
         {

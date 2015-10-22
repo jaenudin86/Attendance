@@ -1,9 +1,11 @@
 package att.attendanceapp;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,7 +41,7 @@ import java.util.Locale;
 
 import DBHelper.Course;
 import DBHelper.Timetable;
-import Helper.Helper;
+import Helper.HelperMethods;
 
 public class AddTimetable extends ActivityBaseClass
 {
@@ -54,6 +56,7 @@ public class AddTimetable extends ActivityBaseClass
     Spinner courseDropDown;
     RadioButton radioOneTime,radioOccur;
     CheckBox daysCheckboxes[]=new CheckBox[7];
+    Timetable timetable;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -66,7 +69,7 @@ public class AddTimetable extends ActivityBaseClass
         fromDate = (EditText) findViewById(R.id.etAddTimetableFromDate);
         toDate = (EditText) findViewById(R.id.etAddTimetableToDate);
         courseDropDown=(Spinner)findViewById(R.id.spnAddTimetableCourse);
-        facilitator= Helper.getCurrentLoggedinUser(this);
+        facilitator= HelperMethods.getCurrentLoggedinUser(this);
         radioOneTime=(RadioButton)findViewById(R.id.rbtnAddTimetableOneTime);
         radioOccur=(RadioButton)findViewById(R.id.rbtnAddTimetableOccuresEvery);
         setupDaysArray();
@@ -183,18 +186,30 @@ public class AddTimetable extends ActivityBaseClass
     };
     public void onOkClick(View view)
     {
+
         String days="";
         for(int i=0;i<daysCheckboxes.length;i++)
         {
             if(daysCheckboxes[i].isChecked())
-                days+=daysCheckboxes[i].getText()+",";
+            {
+                days += daysCheckboxes[i].getTag() + ",";
+            }
         }
+        if(days.length()>0)
+            days=days.substring(0,days.length()-1);
         String isrecurring=radioOccur.isChecked()==true?"yes":"no";
-        new AddToTimetable().execute(courseDropDown.getSelectedItem().toString(),isrecurring,days,
-                tvFromTime.getText().toString(), tvToTime.getText().toString(),
-                Helper.convertDateFromUSToSQL(fromDate.getText().toString()),
-                Helper.convertDateFromUSToSQL(toDate.getText().toString()));
+        timetable=new Timetable();
+        timetable.setCourseCode(courseDropDown.getSelectedItem().toString());
+        timetable.setFacilitatorId(facilitator);
+        timetable.setStartTime(tvFromTime.getText().toString());
+        timetable.setEndTime(tvToTime.getText().toString());
+        timetable.setStartDate(HelperMethods.convertDateFromUSToSQL(fromDate.getText().toString()));
+        timetable.setEndDate(HelperMethods.convertDateFromUSToSQL(toDate.getText().toString()));
+        timetable.setIsRecurring(isrecurring);
+        timetable.setRecurringDays(days);
+        new AddToTimetable().execute(timetable);
     }
+
 
     class GetCourses extends AsyncTask<String, Void, String>
     {
@@ -291,13 +306,13 @@ public class AddTimetable extends ActivityBaseClass
             }
         }
     }
-    class AddToTimetable extends AsyncTask<String, Void, String>
+    class AddToTimetable extends AsyncTask<Timetable, Void, String>
     {
         private ProgressDialog progressDialog;
         InputStream is = null;
         String response = "";
         String returnString="";
-        Timetable timetable;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -308,7 +323,7 @@ public class AddTimetable extends ActivityBaseClass
             progressDialog.show();
         }
         @Override
-        protected String doInBackground(String... params)
+        protected String doInBackground(Timetable... params)
         {
             String url_select = getString(R.string.serviceURL)+"/addTimetable.php";
             try
@@ -320,13 +335,13 @@ public class AddTimetable extends ActivityBaseClass
                 OutputStream outputStream = httpUrlConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                 String data = URLEncoder.encode("facilitator_id", "UTF-8") + "=" + URLEncoder.encode(facilitator, "UTF-8")+"&"+
-                        URLEncoder.encode("course_code", "UTF-8") + "=" + URLEncoder.encode(params[0], "UTF-8")+"&"+
-                        URLEncoder.encode("is_recurring", "UTF-8") + "=" + URLEncoder.encode(params[1], "UTF-8")+"&"+
-                        URLEncoder.encode("recurring_days", "UTF-8") + "=" + URLEncoder.encode(params[2], "UTF-8")+"&"+
-                        URLEncoder.encode("start_time", "UTF-8") + "=" + URLEncoder.encode(params[3], "UTF-8")+"&"+
-                        URLEncoder.encode("end_time", "UTF-8") + "=" + URLEncoder.encode(params[4], "UTF-8")+"&"+
-                        URLEncoder.encode("start_date", "UTF-8") + "=" + URLEncoder.encode(params[5], "UTF-8")+"&"+
-                        URLEncoder.encode("end_date", "UTF-8") + "=" + URLEncoder.encode(params[6], "UTF-8");
+                        URLEncoder.encode("course_code", "UTF-8") + "=" + URLEncoder.encode(params[0].getCourseCode(), "UTF-8")+"&"+
+                        URLEncoder.encode("is_recurring", "UTF-8") + "=" + URLEncoder.encode(params[0].getIsRecurring(), "UTF-8")+"&"+
+                        URLEncoder.encode("recurring_days", "UTF-8") + "=" + URLEncoder.encode(params[0].getRecurringDays(), "UTF-8")+"&"+
+                        URLEncoder.encode("start_time", "UTF-8") + "=" + URLEncoder.encode(params[0].getStartTime(), "UTF-8")+"&"+
+                        URLEncoder.encode("end_time", "UTF-8") + "=" + URLEncoder.encode(params[0].getEndTime(), "UTF-8")+"&"+
+                        URLEncoder.encode("start_date", "UTF-8") + "=" + URLEncoder.encode(params[0].getStartDate(), "UTF-8")+"&"+
+                        URLEncoder.encode("end_date", "UTF-8") + "=" + URLEncoder.encode(params[0].getEndDate(), "UTF-8");
                 bufferedWriter.write(data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -361,13 +376,15 @@ public class AddTimetable extends ActivityBaseClass
             }
             else
             {
-                Toast.makeText(AddTimetable.this,response,Toast.LENGTH_LONG).show();
+                //Toast.makeText(AddTimetable.this,response,Toast.LENGTH_LONG).show();
             }
-            /*timetable.setId(response);
+
+
+            timetable.setId(response);
             Intent intent = getIntent(); //gets the intent that called this intent
             intent.putExtra("newTimetable", timetable);
             setResult(Activity.RESULT_OK, intent);
-            finish();*/
+            finish();
         }
     }
 }

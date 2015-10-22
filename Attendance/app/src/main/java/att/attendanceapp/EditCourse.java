@@ -4,14 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -24,7 +20,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 import DBHelper.Course;
-import Helper.Helper;
+import Helper.HelperMethods;
 
 public class EditCourse extends ActivityBaseClass
 {
@@ -38,7 +34,7 @@ public class EditCourse extends ActivityBaseClass
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_course);
-        facilitator= Helper.getCurrentLoggedinUser(this);
+        facilitator= HelperMethods.getCurrentLoggedinUser(this);
         code=(TextView)findViewById(R.id.tvEditCourseCode);
         courseName=(EditText)findViewById(R.id.etEditCourseCourseName);
         description=(EditText)findViewById(R.id.etEditCourseDescription);

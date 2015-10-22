@@ -2,23 +2,12 @@ package att.attendanceapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.hardware.Camera;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.format.DateFormat;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,14 +24,14 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 import DBHelper.Holiday;
-import Helper.Helper;
+import DBHelper.Timetable;
+import DBHelper.TimetableSlot;
+import Helper.HelperMethods;
 
 public class MyTimetable extends ActivityBaseClass
 {
@@ -56,6 +45,7 @@ public class MyTimetable extends ActivityBaseClass
     private static final String dateTemplate = "MMMM yyyy";
     String daysOfWeek[]={"MON","TUE","WED","THU","FRI","SAT","SUN"};
     ArrayList<Holiday> holidayArrayList=new ArrayList<Holiday>();
+    ArrayList<TimetableSlot> timetableSlots=new ArrayList<TimetableSlot>();
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -66,6 +56,15 @@ public class MyTimetable extends ActivityBaseClass
         calendarDaysHeader = (GridView) this.findViewById(R.id.calendarDaysHeaderGrid);
         setupHeader();
         setupCalendar();
+    }
+
+
+    public void calendarButtonClick(View view)
+    {
+        Button btnClicked=(Button)view;
+        Intent intent=new Intent(this,ViewTimetable.class);
+        intent.putExtra("date",btnClicked.getTag().toString());
+        startActivity(intent);
     }
     public void prevMonthClicked(View view)
     {
@@ -96,10 +95,10 @@ public class MyTimetable extends ActivityBaseClass
     }
     private void setGridCellAdapterToDate(int month, int year)
     {
-        adapter = new CalendarAdapter(this, month, year,holidayArrayList);
+        adapter = new CalendarAdapter(this, month, year,holidayArrayList,timetableSlots);
         calendar.set(year, month - 1, calendar.get(Calendar.DAY_OF_MONTH));
         adapter.notifyDataSetChanged(); // update the adapter after month and year change
-        currentMonth.setText(Helper.convertDateToFormat(calendar.getTime(), dateTemplate));
+        currentMonth.setText(HelperMethods.convertDateToFormat(calendar.getTime(), dateTemplate));
         calendarView.setAdapter(adapter);
     }
     void setupHeader()// to setup week header
@@ -115,9 +114,9 @@ public class MyTimetable extends ActivityBaseClass
             month = calendar.get(Calendar.MONTH) + 1;
             year = calendar.get(Calendar.YEAR);
 
-            String formattedDate = Helper.convertDateToFormat(calendar.getTime(), dateTemplate);
+            String formattedDate = HelperMethods.convertDateToFormat(calendar.getTime(), dateTemplate);
             currentMonth.setText(formattedDate);
-            new GetHolidays().execute(Helper.getCurrentLoggedinUser(this));
+            new GetHolidays().execute(HelperMethods.getCurrentLoggedinUser(this));
             // Initialised
 
         }
@@ -150,6 +149,21 @@ public class MyTimetable extends ActivityBaseClass
         protected String doInBackground(String... params)
         {
             String url_select = getString(R.string.serviceURL)+"/getHolidays.php";
+            response=getData(url_select,params[0]);
+            Gson gsonHoliday = new Gson();
+            Type typeHoliday = new TypeToken<ArrayList<Holiday>>(){}.getType();
+            holidayArrayList = gsonHoliday.fromJson(response, typeHoliday);
+
+            response="";
+            url_select = getString(R.string.serviceURL)+"/getTimetable.php";
+            response=getData(url_select,params[0]);
+            Gson gsonTimetable = new Gson();
+            Type typeTimetable = new TypeToken<ArrayList<TimetableSlot>>(){}.getType();
+            timetableSlots = gsonTimetable.fromJson(response, typeTimetable);
+            return returnString;
+        }
+        private String getData(String url_select,String facilitator)
+        {
             try
             {
                 URL url = new URL(url_select);
@@ -158,7 +172,7 @@ public class MyTimetable extends ActivityBaseClass
                 httpUrlConnection.setDoOutput(true);
                 OutputStream outputStream = httpUrlConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                String data = URLEncoder.encode("user_id", "UTF-8") + "=" + URLEncoder.encode(params[0], "UTF-8");
+                String data = URLEncoder.encode("user_id", "UTF-8") + "=" + URLEncoder.encode(facilitator, "UTF-8");
                 bufferedWriter.write(data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -170,9 +184,6 @@ public class MyTimetable extends ActivityBaseClass
                 {
                     response+= line;
                 }
-                Gson gson = new Gson();
-                Type typeCourse = new TypeToken<ArrayList<Holiday>>(){}.getType();
-                holidayArrayList = gson.fromJson(response, typeCourse);
                 bufferedReader.close();
                 is.close();
                 httpUrlConnection.disconnect();
@@ -182,16 +193,15 @@ public class MyTimetable extends ActivityBaseClass
             {
                 returnString="Exception:"+ex.toString();
             }
-            return returnString;
+            return response;
         }
-
         protected void onPostExecute(String v)
         {
             super.onPostExecute(v);
             // no exception found on previous call
             if(!v.toLowerCase().contains("exception"))
             {
-                adapter = new CalendarAdapter(MyTimetable.this, month, year,holidayArrayList);
+                adapter = new CalendarAdapter(MyTimetable.this, month, year,holidayArrayList,timetableSlots);
                 adapter.notifyDataSetChanged();
                 calendarView.setAdapter(adapter);
             }

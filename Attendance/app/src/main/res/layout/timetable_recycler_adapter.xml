@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+    <TextView
+        android:layout_width="wrap_content" android:text="Course code"
+        android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/tvViewTimetableCourseName"
+        android:layout_alignParentTop="true"
+        />
+
+    <TextView
+        android:layout_width="wrap_content" android:text="Course time"
+        android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/tvViewTimetableCourseTime"
+        android:layout_below="@+id/tvViewTimetableCourseName"
+        />
+
+    <View
+        android:layout_width="match_parent" android:layout_marginTop="10dp" android:layout_marginBottom="5dp"
+        android:layout_height="1dp" android:background="@color/mainColor" android:layout_below="@+id/tvViewTimetableCourseTime"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fill Attendance"
+        android:id="@+id/btnTimetableAttendance"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+
+</RelativeLayout>

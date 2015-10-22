@@ -1,9 +1,11 @@
 package DBHelper;
 
+import java.io.Serializable;
+
 /**
  * Created by rujoota on 19-10-2015.
  */
-public class Timetable
+public class Timetable implements Serializable
 {
     private String facilitatorId;
     private String startDate;

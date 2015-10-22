@@ -13,8 +13,9 @@
         <item>Start taking attendance now</item>
         <item>View reports</item>
         <item>My courses</item>
-        <item>My time-table</item>
+        <item>My Attendance Calendar</item>
         <item>Manage holidays</item>
+        <item>My Schedule</item>
     </array>
     <string name="title_activity_holiday_view">HolidayView</string>
     <string name="title_activity_add_course">AddCourse</string>
@@ -42,4 +43,6 @@
     <string name="title_activity_my_timetable">My Timetable</string>
     <string name="title_activity_test_grid">TestGrid</string>
     <string name="title_activity_add_timetable">AddTimetable</string>
+    <string name="title_activity_view_timetable">ViewTimetable</string>
+    <string name="title_activity_manage_my_schedule">ManageMySchedule</string>
 </resources>
