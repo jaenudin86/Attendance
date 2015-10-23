@@ -60,3 +60,17 @@ Starting with attendance filling part
 Problems:
 Custom calendar from almost start - extensive testing and bug fixing required. Saw some ready-to-use components but not suitable for my needs
 Fixing old code of holidays and courses-added startactivityforresult in add and edit.
+
+
+Journal entry for 22nd Oct, 2015
+What I have done:
+Simplified navigation
+Recyclerview
+Import students
+Calendar view updates
+
+Plans for next week:
+Fill attendance part
+
+Problems:
+File importing from Android
