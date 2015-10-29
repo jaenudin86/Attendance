@@ -60,3 +60,31 @@ Starting with attendance filling part
 Problems:
 Custom calendar from almost start - extensive testing and bug fixing required. Saw some ready-to-use components but not suitable for my needs
 Fixing old code of holidays and courses-added startactivityforresult in add and edit.
+
+
+Journal entry for 22nd Oct, 2015
+What I have done:
+Simplified navigation
+Recyclerview
+Import students
+Calendar view updates
+
+Plans for next week:
+Fill attendance part
+
+Problems:
+File importing from Android
+
+
+Journal entry for 29th Oct, 2015
+What I have done:
+Finished submit attendance module for faculty
+Updated attendance calendar grid to reflect different colors
+
+Plans for next week:
+Complete faculty module with report exporting
+Start on student module
+Research about login
+
+Problems:
+Communicating with radio buttons of recycler adapter via activity(they do not retain their state)
