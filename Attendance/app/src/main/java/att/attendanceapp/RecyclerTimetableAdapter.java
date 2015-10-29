@@ -57,7 +57,7 @@ public class RecyclerTimetableAdapter extends RecyclerView.Adapter<RecyclerTimet
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         final String courseCode=mDataset.get(position).getCourseCode();
@@ -65,7 +65,8 @@ public class RecyclerTimetableAdapter extends RecyclerView.Adapter<RecyclerTimet
         holder.courseCode.setText(courseCode);
         String timingStart= HelperMethods.convertToStandardTime(mDataset.get(position).getStartTime());
         String timingEnd= HelperMethods.convertToStandardTime(mDataset.get(position).getEndTime());
-        holder.time.setText(timingStart+"-"+timingEnd);
+        holder.time.setText(timingStart + "-" + timingEnd);
+        final String date=HelperMethods.convertDateFromSQLToUS(mDataset.get(position).getDate());
         holder.btnFillAttendance.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -74,6 +75,8 @@ public class RecyclerTimetableAdapter extends RecyclerView.Adapter<RecyclerTimet
                 Intent intent=new Intent(context,FillAttendanceByFaculty.class);
                 intent.putExtra(context.getString(R.string.bundleKeyCourseCode),courseCode);
                 intent.putExtra(context.getString(R.string.bundleKeyAttendanceId),attendanceId);
+                intent.putExtra(context.getString(R.string.bundleKeyDate),date);
+                intent.putExtra(context.getString(R.string.bundleKeyTimings),holder.time.getText());
                 context.startActivity(intent);
             }
         });

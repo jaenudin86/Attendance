@@ -4,15 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Student number"
-        android:id="@+id/tvFillAttendanceStudentNumber"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -20,17 +12,27 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="email id"
         android:id="@+id/tvFillAttendanceEmailId"
-        android:layout_below="@+id/tvFillAttendanceStudentNumber"
+
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Student number"
+        android:id="@+id/tvFillAttendanceStudentNumber"
+        android:layout_below="@+id/tvFillAttendanceEmailId"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="name"
         android:id="@+id/tvFillAttendanceStudentName"
-        android:layout_below="@+id/tvFillAttendanceEmailId"
+        android:layout_below="@+id/tvFillAttendanceStudentNumber"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 <RadioGroup android:id="@+id/rgFillAttendance"

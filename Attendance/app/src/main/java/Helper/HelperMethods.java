@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Random;
 
 import att.attendanceapp.R;
 
@@ -73,6 +74,16 @@ public class HelperMethods
             Log.e(TAG,ex.getMessage());
         }
         return response;
+    }
+    public static int generateRandom(int min,int max)
+    {
+        Random random = new Random();
+        int randomInt = random.nextInt((max - min) + 1) + min;
+        if (randomInt > max)
+        {
+            randomInt -= min;
+        }
+        return randomInt;
     }
     public static String convertToStandardTime(String time)
     {

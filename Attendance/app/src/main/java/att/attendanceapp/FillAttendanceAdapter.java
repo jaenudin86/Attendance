@@ -34,16 +34,18 @@ public class FillAttendanceAdapter  extends RecyclerView.Adapter<FillAttendanceA
     Boolean presentStates;
     ArrayList<Attendee> absentees;
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView email,number;
+        public TextView email,number,name;
         RadioButton present,absent;
         RadioGroup radioGroup;
         public ViewHolder(View itemView) {
             super(itemView);
             email=(TextView)itemView.findViewById(R.id.tvFillAttendanceEmailId);
             number=(TextView)itemView.findViewById(R.id.tvFillAttendanceStudentNumber);
+            name=(TextView)itemView.findViewById(R.id.tvFillAttendanceStudentName);
             present=(RadioButton)itemView.findViewById(R.id.rbtnFillAttendancePresent);
             absent=(RadioButton)itemView.findViewById(R.id.rbtnFillAttendanceAbsent);
             radioGroup=(RadioGroup)itemView.findViewById(R.id.rgFillAttendance);
+
         }
     }
     public void setIsAllPresentChecked(Boolean isChecked)
@@ -81,6 +83,7 @@ public class FillAttendanceAdapter  extends RecyclerView.Adapter<FillAttendanceA
         Attendee current=mDataset.get(position);
         holder.email.setText(current.getEmailId());
         holder.number.setText(current.getAttendeeNumber());
+        holder.name.setText(current.getName());
         //if(isAllPresentChecked)
         holder.present.setChecked(isAllPresentChecked);
         holder.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()

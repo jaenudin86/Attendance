@@ -183,6 +183,27 @@ public class CalendarAdapter extends BaseAdapter
         {
             gridcell.setBackgroundResource(R.color.mainColor);
         }
+        for(int i=0;i<timetableSlotList.size();i++)
+        {
+            Date currentPrintingDate = new Date(Integer.parseInt(theyear), Integer.parseInt(themonth), Integer.parseInt(theday));
+            String startdt[]=timetableSlotList.get(i).getDate().split("-");
+
+            Date fromDate=new Date(Integer.parseInt(startdt[0]),Integer.parseInt(startdt[1]),Integer.parseInt(startdt[2]));
+
+            if (currentPrintingDate.equals(fromDate))
+            {
+                if(timetableSlotList.get(i).getIsSubmitted().equals("0"))
+                {
+                    gridcell.setBackgroundResource(R.color.attendanceNotFilled);
+                    break;
+                }
+                else
+                {
+                    gridcell.setBackgroundResource(R.color.attendanceFilled);
+                    break;
+                }
+            }
+        }
         for(int i=0;i<holidayArrayList.size();i++)
         {
             Date currentPrintingDate = new Date(Integer.parseInt(theyear), Integer.parseInt(themonth), Integer.parseInt(theday));
@@ -198,19 +219,7 @@ public class CalendarAdapter extends BaseAdapter
                 break;
             }
         }
-        for(int i=0;i<timetableSlotList.size();i++)
-        {
-            Date currentPrintingDate = new Date(Integer.parseInt(theyear), Integer.parseInt(themonth), Integer.parseInt(theday));
-            String startdt[]=timetableSlotList.get(i).getDate().split("-");
 
-            Date fromDate=new Date(Integer.parseInt(startdt[0]),Integer.parseInt(startdt[1]),Integer.parseInt(startdt[2]));
-
-            if (currentPrintingDate.equals(fromDate))
-            {
-                gridcell.setBackgroundResource(R.color.attendanceNotFilled);
-                break;
-            }
-        }
         return row;
     }
 

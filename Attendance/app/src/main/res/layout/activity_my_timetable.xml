@@ -4,9 +4,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-    <TextView android:id="@+id/tvTimetableHelp" android:layout_marginBottom="10dp"
-              android:layout_width="wrap_content" android:layout_alignParentStart="true" android:layout_alignParentLeft="true" android:layout_alignParentTop="true"
-              android:layout_height="wrap_content" android:text="Blue-holiday, green-attendance filled, yellow-current day,red-attendance not filled"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView android:id="@+id/tvTimetableHelp1"
+              android:layout_marginBottom="10dp"
+              android:layout_width="wrap_content"
+              android:layout_alignParentStart="true"
+              android:layout_alignParentLeft="true" android:layout_alignParentTop="true"
+              android:layout_height="wrap_content"
+              android:text="holiday"
+        android:background="@color/holiday"/>
+
+    <TextView android:id="@+id/tvTimetableHelp2"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="attendance filled"
+              android:layout_alignParentTop="true"
+              android:layout_toRightOf="@+id/tvTimetableHelp1"
+              android:layout_toEndOf="@+id/tvTimetableHelp1"
+              android:layout_marginLeft="10dp"
+              android:background="@color/attendanceFilled"/>
+        <TextView android:id="@+id/tvTimetableHelp3"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="attendance not filled"
+                  android:layout_alignParentTop="true"
+                  android:layout_toRightOf="@+id/tvTimetableHelp2"
+                  android:layout_toEndOf="@+id/tvTimetableHelp2"
+                  android:layout_marginLeft="10dp"
+                  android:background="@color/attendanceNotFilled"/>
+
+    </RelativeLayout>
     <!-- date toolbar -->
     <RelativeLayout
         android:layout_width="match_parent"

@@ -49,4 +49,6 @@
     <string name="title_activity_fill_attendance_by_faculty">FillAttendanceByFaculty</string>
     <string name="bundleKeyCourseCode">courseCode</string>
     <string name="bundleKeyAttendanceId">attendanceId</string>
+    <string name="bundleKeyTimings">timings</string>
+    <string name="bundleKeyDate">date</string>
 </resources>

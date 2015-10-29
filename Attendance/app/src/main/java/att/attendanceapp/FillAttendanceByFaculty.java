@@ -1,8 +1,11 @@
 package att.attendanceapp;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -11,12 +14,20 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -33,8 +44,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Random;
 
 import DBHelper.Attendee;
+import DBHelper.Course;
 import DBHelper.Holiday;
 import DBHelper.Timetable;
 import Helper.AdapterInterface;
@@ -48,19 +61,28 @@ public class FillAttendanceByFaculty extends ActivityBaseClass
     ArrayList<Attendee> attendeeList=new ArrayList<Attendee>();
     String courseCode="";
     String attendanceId="";
+
     FillAttendanceAdapter adapter;
     CheckBox allPresent;
+    TextView tvCourseCode,tvCourseTimings,tvCourseDate;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fill_attendance_by_faculty);
-
+        tvCourseCode=(TextView)findViewById(R.id.tvFillAttendanceCourseCode);
+        tvCourseTimings=(TextView)findViewById(R.id.tvFillAttendanceTimings);
+        tvCourseDate=(TextView)findViewById(R.id.tvFillAttendanceDate);
         Bundle data = getIntent().getExtras();
         if (data != null)
         {
             courseCode = data.getString(getString(R.string.bundleKeyCourseCode));
+            tvCourseCode.setText(courseCode);
             attendanceId=data.getString(getString(R.string.bundleKeyAttendanceId));
+            String timings=data.getString(getString(R.string.bundleKeyTimings));
+            tvCourseTimings.setText(timings);
+            String date=data.getString(getString(R.string.bundleKeyDate));
+            tvCourseDate.setText(date);
         }
         attendeesView = (RecyclerView) findViewById(R.id.rviewFillAttendance);
         attendeesView.setHasFixedSize(true);
@@ -71,9 +93,40 @@ public class FillAttendanceByFaculty extends ActivityBaseClass
 
         new GetAttendeesForThisCourse().execute(courseCode);
     }
-    public void onSaveClicked(View view)
+    public void generateCodeClick(View view)
     {
+        final Dialog dialog = new Dialog(context);
+        dialog.setTitle("Your random code is:");
+        RelativeLayout inflatedView = (RelativeLayout) View.inflate(this, R.layout.random_code_popup, null);
+        dialog.setContentView(inflatedView);
+        int randomNumber=HelperMethods.generateRandom(1000,9999);
 
+        final TextView tvRandom=(TextView)inflatedView.findViewById(R.id.tvRandomCode);
+        tvRandom.setText(String.valueOf(randomNumber));
+        new UpdateRandomCode().execute(attendanceId, String.valueOf(randomNumber));
+        Button btnOk=(Button)inflatedView.findViewById(R.id.btnRandomCodeOk);
+        btnOk.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                dialog.dismiss();
+            }
+        });
+
+        ImageButton btnRefresh=(ImageButton)inflatedView.findViewById(R.id.ibtnRandomCodeRefresh);
+        btnRefresh.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                int randomNumber=HelperMethods.generateRandom(1000,9999);
+                tvRandom.setText(String.valueOf(randomNumber));
+                new UpdateRandomCode().execute(attendanceId,String.valueOf(randomNumber));
+            }
+        });
+
+        dialog.show();
     }
     public void setRadioStatus(RadioButton[] radioButtons)
     {
@@ -92,6 +145,50 @@ public class FillAttendanceByFaculty extends ActivityBaseClass
         if(!rollnos.isEmpty())
             rollnos=rollnos.substring(0,rollnos.length()-1);
         new SubmitAttendance().execute(rollnos);
+    }
+
+    class UpdateRandomCode extends AsyncTask<String, Void, String>
+    {
+        InputStream is = null;
+        String response = "";
+        String returnString="";
+
+        @Override
+        protected String doInBackground(String... params)
+        {
+            String url_select = getString(R.string.serviceURL)+"/generateCode.php";
+            try
+            {
+                String keys[] = {"attendance_id", "generated_code"};
+                String values[] = {params[0], params[1]};
+                response = HelperMethods.getResponse(url_select, keys, values);
+                if (!response.isEmpty() && !response.equals("null"))
+                {
+
+                }
+                else
+                    response = "";
+                returnString="ok";
+            }
+            catch(Exception ex)
+            {
+                returnString="Exception:"+ex.toString();
+            }
+            return returnString;
+        }
+
+        protected void onPostExecute(String v)
+        {
+            // no exception found on previous call
+            if(!v.toLowerCase().contains("exception"))
+            {
+
+            }
+            else
+            {
+                Toast.makeText(getApplicationContext(),v,Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     class GetAttendeesForThisCourse extends AsyncTask<String, Void, String>
@@ -179,6 +276,7 @@ public class FillAttendanceByFaculty extends ActivityBaseClass
             {
                 Toast.makeText(getApplicationContext(),v,Toast.LENGTH_SHORT).show();
             }
+
         }
     }
 
@@ -210,6 +308,7 @@ public class FillAttendanceByFaculty extends ActivityBaseClass
                     Toast.makeText(FillAttendanceByFaculty.this, response, Toast.LENGTH_SHORT).show();
                 }
             }
+            finish();
         }
     }
 }

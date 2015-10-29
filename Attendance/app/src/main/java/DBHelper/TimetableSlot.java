@@ -12,6 +12,16 @@ public class TimetableSlot
     private String date;
     private String courseCode;
     private String timetableId;
+    private String isSubmitted;
+    public String getIsSubmitted()
+    {
+        return isSubmitted;
+    }
+
+    public void setIsSubmitted(String isSubmitted)
+    {
+        this.isSubmitted = isSubmitted;
+    }
     public String getFacilitator()
     {
         return facilitator;
