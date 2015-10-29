@@ -6,10 +6,20 @@ import android.nfc.Tag;
 import android.util.Log;
 
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 import att.attendanceapp.R;
@@ -20,7 +30,50 @@ import att.attendanceapp.R;
 public class HelperMethods
 {
     static String sharedPrefFileName="userInfo";
-    static String TAG="ATTENDANCE HELPER";
+    static String TAG="ATTENDANCEHELPER";
+
+    public static String getResponse(String serviceUrl,String[] keys, String[] values)
+    {
+        String response = "";
+        InputStream is = null;
+        try
+        {
+            URL url = new URL(serviceUrl);
+            HttpURLConnection httpUrlConnection = (HttpURLConnection) url.openConnection();
+            httpUrlConnection.setRequestMethod("POST");
+            httpUrlConnection.setDoOutput(true);
+            OutputStream outputStream = httpUrlConnection.getOutputStream();
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+            String data="";
+            for(int i=0;i<keys.length;i++)
+            {
+                data += URLEncoder.encode(keys[i], "UTF-8")+"=";
+                data += URLEncoder.encode(values[i], "UTF-8") + "&";
+            }
+            data=data.substring(0,data.length()-1);
+            bufferedWriter.write(data);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            outputStream.close();
+            is = httpUrlConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"));
+            String line;
+            while ((line = bufferedReader.readLine()) != null)
+            {
+                response += line;
+            }
+            bufferedReader.close();
+            is.close();
+            httpUrlConnection.disconnect();
+
+        }
+        catch (Exception ex)
+        {
+            response="Exception:"+ex.getMessage();
+            Log.e(TAG,ex.getMessage());
+        }
+        return response;
+    }
     public static String convertToStandardTime(String time)
     {
         String arr[]=time.split(":");

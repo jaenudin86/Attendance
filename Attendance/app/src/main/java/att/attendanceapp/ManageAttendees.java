@@ -58,7 +58,7 @@ public class ManageAttendees extends ActivityBaseClass
             setContentView(R.layout.activity_manage_attendees);
             Bundle data = getIntent().getExtras();
             if (data != null)
-                courseCode = data.getString("courseCode");
+                courseCode = data.getString(getString(R.string.bundleKeyCourseCode));
 
             attendeesView = (RecyclerView) findViewById(R.id.rviewManageAttendees);
             attendeesView.setHasFixedSize(true);

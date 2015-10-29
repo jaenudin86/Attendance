@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Student number"
+        android:id="@+id/tvFillAttendanceStudentNumber"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="email id"
+        android:id="@+id/tvFillAttendanceEmailId"
+        android:layout_below="@+id/tvFillAttendanceStudentNumber"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="name"
+        android:id="@+id/tvFillAttendanceStudentName"
+        android:layout_below="@+id/tvFillAttendanceEmailId"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+<RadioGroup android:id="@+id/rgFillAttendance"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" android:layout_alignParentRight="true"
+    android:layout_alignParentEnd="true" android:orientation="horizontal">
+    <RadioButton
+        android:layout_width="50dp"
+        android:layout_height="50dp" android:gravity="center"
+        android:background="@drawable/present_button"
+        android:button="@android:color/transparent"
+        android:id="@+id/rbtnFillAttendancePresent"
+        />
+    <RadioButton
+        android:layout_width="50dp" android:layout_marginLeft="10dp"
+        android:layout_height="50dp" android:gravity="center"
+
+        android:id="@+id/rbtnFillAttendanceAbsent" android:background="@drawable/absent_button"
+        android:button="@android:color/transparent"
+        />
+
+</RadioGroup>
+     <View
+         android:layout_width="match_parent" android:layout_marginTop="10dp" android:layout_marginBottom="5dp"
+         android:layout_height="1dp" android:background="@color/mainColor"
+         android:layout_below="@+id/tvFillAttendanceStudentName"/>
+
+
+</RelativeLayout>

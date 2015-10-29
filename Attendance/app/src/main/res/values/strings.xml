@@ -46,4 +46,7 @@
     <string name="title_activity_view_timetable">ViewTimetable</string>
     <string name="title_activity_manage_my_schedule">ManageMySchedule</string>
     <string name="title_activity_manage_attendees">ManageAttendees</string>
+    <string name="title_activity_fill_attendance_by_faculty">FillAttendanceByFaculty</string>
+    <string name="bundleKeyCourseCode">courseCode</string>
+    <string name="bundleKeyAttendanceId">attendanceId</string>
 </resources>

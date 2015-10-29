@@ -71,6 +71,10 @@
             android:name=".ManageAttendees"
             android:label="@string/title_activity_manage_attendees" >
         </activity>
+        <activity
+            android:name=".FillAttendanceByFaculty"
+            android:label="@string/title_activity_fill_attendance_by_faculty" >
+        </activity>
     </application>
 
 </manifest>

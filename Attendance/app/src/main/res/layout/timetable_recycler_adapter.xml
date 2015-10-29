@@ -24,10 +24,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Fill Attendance"
-        android:id="@+id/btnTimetableAttendance"
+        android:id="@+id/btnViewTimetableFillAttendance"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentEnd="true" />
 
 
 </RelativeLayout>

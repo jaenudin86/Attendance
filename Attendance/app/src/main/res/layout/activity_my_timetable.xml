@@ -59,16 +59,7 @@
         android:verticalSpacing="10dp" android:stretchMode="columnWidth"
         >
     </GridView>
-    <ImageButton
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:text="Add"
-        android:id="@+id/ibtnAddTimetable"
-        android:src="@drawable/icon_add_floating"
-        android:background="@drawable/floating_action_button"
-        android:layout_gravity="center_horizontal" android:layout_marginTop="30dp"
-        android:onClick="onAddTimetableClick"
-        />
+
 
 
 </LinearLayout>

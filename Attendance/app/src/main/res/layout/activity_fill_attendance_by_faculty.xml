@@ -1,0 +1,76 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                tools:context="att.attendanceapp.FillAttendanceByFaculty">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Course code"
+        android:id="@+id/tvFillAttendanceCourseCode"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Course timings"
+        android:id="@+id/tvFillAttendanceTimings"
+        android:layout_below="@+id/tvFillAttendanceCourseCode"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Generate Code" style="?android:attr/buttonStyleSmall"
+        android:id="@+id/btnFillAttendanceGenerateCode"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true" android:layout_alignParentEnd="true"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="All present" android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/chkFillAttendanceAllPresent" android:layout_marginBottom="20dp" android:layout_marginTop="10dp"
+        android:layout_below="@+id/tvFillAttendanceTimings"
+        android:layout_alignParentLeft="true" android:layout_alignParentStart="true"/>
+
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rviewFillAttendance"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" android:clipToPadding="false"
+
+        android:layout_below="@+id/chkFillAttendanceAllPresent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+    </android.support.v7.widget.RecyclerView>
+    <ImageButton
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:text="Save"
+        android:id="@+id/ibtnSaveAttendance"
+        android:src="@drawable/icon_save"
+        android:background="@drawable/floating_action_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="20dp"
+        android:elevation="4dp"
+        android:onClick="onSaveAttendanceClick"
+
+        />
+
+</RelativeLayout>

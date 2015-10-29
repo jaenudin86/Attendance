@@ -61,6 +61,7 @@ public class ViewTimetable extends ActivityBaseClass
         }
         new GetTimetable().execute(date);
     }
+
     class GetTimetable extends AsyncTask<String, Void, String>
     {
 
@@ -137,7 +138,7 @@ public class ViewTimetable extends ActivityBaseClass
                     noData.setVisibility(View.INVISIBLE);
                     try
                     {
-                        recyclerAdapter = new RecyclerTimetableAdapter(timetableForDay);
+                        recyclerAdapter = new RecyclerTimetableAdapter(timetableForDay,ViewTimetable.this);
                         recyclerView.setAdapter(recyclerAdapter);
                     }
                     catch (Exception ex)
