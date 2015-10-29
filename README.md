@@ -74,3 +74,17 @@ Fill attendance part
 
 Problems:
 File importing from Android
+
+
+Journal entry for 29th Oct, 2015
+What I have done:
+Finished submit attendance module for faculty
+Updated attendance calendar grid to reflect different colors
+
+Plans for next week:
+Complete faculty module with report exporting
+Start on student module
+Research about login
+
+Problems:
+Communicating with radio buttons of recycler adapter via activity(they do not retain their state)
