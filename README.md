@@ -88,3 +88,15 @@ Research about login
 
 Problems:
 Communicating with radio buttons of recycler adapter via activity(they do not retain their state)
+
+Journal entry for 11th Nov, 2015
+What I have done:
+Finished fill attendance for student
+Started on viewing reports for faculty
+
+Plans for next week:
+Start on login
+Finish view reports
+
+Problems:
+Managing simultenous communication when student submits attendance and when faculty receives in their app.
