@@ -54,7 +54,14 @@
         android:layout_below="@+id/tvFillAttendanceTimings"
         android:layout_alignParentLeft="true" android:layout_alignParentStart="true"/>
 
-
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Refresh"
+        android:id="@+id/btnFillAttendanceRefresh"
+        android:layout_below="@+id/tvFillAttendanceTimings"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" android:onClick="refreshClick"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rviewFillAttendance"
@@ -81,5 +88,7 @@
         android:onClick="onSaveAttendanceClick"
 
         />
+
+
 
 </RelativeLayout>

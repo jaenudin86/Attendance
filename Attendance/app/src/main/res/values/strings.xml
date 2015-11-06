@@ -8,6 +8,7 @@
     <string name="action_rate">Rate us</string>
     <string name="action_signout">Sign out</string>
     <string name="action_home">Home</string>
+    <string name="action_attendee">Switch to attendee</string>
     <string name="action_change_password">Change password</string>
     <array name="listview_main_facilitator">
         <item>Start taking attendance now</item>
@@ -16,6 +17,10 @@
         <item>My Attendance Calendar</item>
         <item>Manage holidays</item>
         <item>My Schedule</item>
+    </array>
+    <array name="listview_main_attendee">
+        <item>Fill attendance</item>
+        <item>View reports</item>
     </array>
     <string name="title_activity_holiday_view">HolidayView</string>
     <string name="title_activity_add_course">AddCourse</string>
@@ -51,4 +56,7 @@
     <string name="bundleKeyAttendanceId">attendanceId</string>
     <string name="bundleKeyTimings">timings</string>
     <string name="bundleKeyDate">date</string>
+    <string name="title_activity_main_activity_attendee">MainActivityAttendee</string>
+    <string name="title_activity_view_timetable_attendee">ViewTimetableAttendee</string>
+    <string name="title_activity_faculty_report">FacultyReport</string>
 </resources>

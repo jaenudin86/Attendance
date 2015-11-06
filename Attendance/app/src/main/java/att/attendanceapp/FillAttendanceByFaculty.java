@@ -45,6 +45,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import DBHelper.Attendee;
 import DBHelper.Course;
@@ -93,9 +95,14 @@ public class FillAttendanceByFaculty extends ActivityBaseClass
 
         new GetAttendeesForThisCourse().execute(courseCode);
     }
+    public void refreshClick(View view)
+    {
+        new RefreshAttendance().execute(attendanceId);
+    }
     public void generateCodeClick(View view)
     {
         final Dialog dialog = new Dialog(context);
+        dialog.setCancelable(false);
         dialog.setTitle("Your random code is:");
         RelativeLayout inflatedView = (RelativeLayout) View.inflate(this, R.layout.random_code_popup, null);
         dialog.setContentView(inflatedView);
@@ -104,6 +111,7 @@ public class FillAttendanceByFaculty extends ActivityBaseClass
         final TextView tvRandom=(TextView)inflatedView.findViewById(R.id.tvRandomCode);
         tvRandom.setText(String.valueOf(randomNumber));
         new UpdateRandomCode().execute(attendanceId, String.valueOf(randomNumber));
+        new UpdateAttendance().execute(attendanceId);
         Button btnOk=(Button)inflatedView.findViewById(R.id.btnRandomCodeOk);
         btnOk.setOnClickListener(new View.OnClickListener()
         {
@@ -309,6 +317,81 @@ public class FillAttendanceByFaculty extends ActivityBaseClass
                 }
             }
             finish();
+        }
+    }
+
+    class UpdateAttendance extends AsyncTask<String, String, Void>
+    {
+        //private ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
+        String response="";
+       // private ProgressDialog progressDialog;
+        InputStream is = null;
+
+        @Override
+        protected Void doInBackground(String... params)
+        {
+            String url_select = getString(R.string.serviceURL) + "/updateTempAttendance.php";
+            String keys[]={"attendance_id"};
+            String values[]={params[0]};
+            response=HelperMethods.getResponse(url_select,keys,values);
+
+            return null;
+        }
+        protected void onPostExecute(Void v)
+        {
+            /*if (progressDialog!=null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }*/
+            if(!response.isEmpty() && !response.equals("null"))
+            {
+                if (response.contains("Exception"))
+                {
+                    Toast.makeText(FillAttendanceByFaculty.this,"Attendance not fully submitted. Please try later."+response,Toast.LENGTH_LONG).show();
+                    //Log.e("Attendance", response);
+                }
+                else
+                    Toast.makeText(FillAttendanceByFaculty.this,response,Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    class RefreshAttendance extends AsyncTask<String, String, Void>
+    {
+        //private ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
+        String response="";
+        // private ProgressDialog progressDialog;
+        InputStream is = null;
+
+        @Override
+        protected Void doInBackground(String... params)
+        {
+            String url_select = getString(R.string.serviceURL) + "/refreshAttendance.php";
+            String keys[]={"attendance_id"};
+            String values[]={params[0]};
+            response=HelperMethods.getResponse(url_select,keys,values);
+            Gson gson = new Gson();
+            Type type = new TypeToken<ArrayList<Attendee>>()
+            {
+            }.getType();
+            attendeeList = gson.fromJson(response, type);
+            return null;
+        }
+        protected void onPostExecute(Void v)
+        {
+            if(!response.isEmpty() && !response.equals("null"))
+            {
+                if (response.contains("Exception"))
+                {
+                    Toast.makeText(FillAttendanceByFaculty.this,"Please try later."+response,Toast.LENGTH_LONG).show();
+                    //Log.e("Attendance", response);
+                }
+                else
+                {
+                    // reset adapter
+                    adapter = new FillAttendanceAdapter(attendeeList, context, courseCode,false);
+                    attendeesView.setAdapter(adapter);
+                }
+            }
         }
     }
 }

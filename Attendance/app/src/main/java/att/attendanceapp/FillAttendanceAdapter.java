@@ -85,7 +85,20 @@ public class FillAttendanceAdapter  extends RecyclerView.Adapter<FillAttendanceA
         holder.number.setText(current.getAttendeeNumber());
         holder.name.setText(current.getName());
         //if(isAllPresentChecked)
-        holder.present.setChecked(isAllPresentChecked);
+        if(isAllPresentChecked)
+            holder.present.setChecked(isAllPresentChecked);
+        else
+        {
+            if (current.getIsAbsent().equals("1")) //absent
+            {
+                holder.absent.setChecked(true);
+                absentees.add(mDataset.get(position));
+            }
+            else if (current.getIsAbsent().equals("0"))
+            {
+                holder.present.setChecked(true);
+            }
+        }
         holder.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             @Override

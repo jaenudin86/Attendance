@@ -6,6 +6,7 @@ package DBHelper;
 public class TimetableSlot
 {
     private String facilitator;
+    private String attendeeId;
     private String id;
     private String startTime;
     private String endTime;
@@ -90,5 +91,15 @@ public class TimetableSlot
     public void setCourseCode(String courseCode)
     {
         this.courseCode = courseCode;
+    }
+
+    public String getAttendeeId()
+    {
+        return attendeeId;
+    }
+
+    public void setAttendeeId(String attendeeId)
+    {
+        this.attendeeId = attendeeId;
     }
 }

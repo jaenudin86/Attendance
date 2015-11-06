@@ -36,6 +36,12 @@ public class ActivityBaseClass extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        if (id == R.id.action_attendee)
+        {
+            Intent intent=new Intent(this,MainActivityAttendee.class);
+            startActivity(intent);
+            return true;
+        }
         if (id == R.id.action_home)
         {
             Intent intent=new Intent(this,MainActivity.class);

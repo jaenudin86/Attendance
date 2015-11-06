@@ -75,6 +75,18 @@
             android:name=".FillAttendanceByFaculty"
             android:label="@string/title_activity_fill_attendance_by_faculty" >
         </activity>
+        <activity
+            android:name=".MainActivityAttendee"
+            android:label="@string/title_activity_main_activity_attendee" >
+        </activity>
+        <activity
+            android:name=".ViewTimetableAttendee"
+            android:label="@string/title_activity_view_timetable_attendee" >
+        </activity>
+        <activity
+            android:name=".FacultyReport"
+            android:label="@string/title_activity_faculty_report" >
+        </activity>
     </application>
 
 </manifest>

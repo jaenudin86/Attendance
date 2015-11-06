@@ -8,7 +8,15 @@ public class Attendee
     private String name;
     private String emailId;
     private String attendeeNumber;
-
+    String isAbsent ="0";
+    public String getIsAbsent()
+    {
+        return isAbsent;
+    }
+    public void setIsAbsent(String isAbsent)
+    {
+        this.isAbsent = isAbsent;
+    }
     public String getName()
     {
         return name;
