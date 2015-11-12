@@ -89,7 +89,7 @@ Research about login
 Problems:
 Communicating with radio buttons of recycler adapter via activity(they do not retain their state)
 
-Journal entry for 11th Nov, 2015
+Journal entry for 5th Nov, 2015
 What I have done:
 Finished fill attendance for student
 Started on viewing reports for faculty
@@ -100,3 +100,15 @@ Finish view reports
 
 Problems:
 Managing simultenous communication when student submits attendance and when faculty receives in their app.
+
+Journal entry for 11th Nov, 2015
+What I have done:
+Created basic app for NFC tag reading writing
+Finished view report
+
+Plans for next week:
+Login
+Multiple data writing in NFC tag
+
+Problems:
+Understanding how NFC works
