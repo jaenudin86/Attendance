@@ -1,22 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+<LinearLayout
               android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/rlFacultyReportStudent"
+        android:layout_height="wrap_content"  android:layout_width="0dp"
+        android:layout_weight="0.50">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
+            android:text="StudentId"
+            android:id="@+id/tvFacultyReportStudentId"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+           />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="StudentName"
+            android:id="@+id/tvFacultyReportStudentName"
+            android:layout_below="@+id/tvFacultyReportStudentId"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="StudentNumber"
+            android:id="@+id/tvFacultyReportStudentNumber"
+            android:layout_below="@+id/tvFacultyReportStudentName"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+    </RelativeLayout>
     <TextView
-        android:layout_width="wrap_content"
+
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Subjects"
-        android:id="@+id/textView2"
+
+        android:text="CourseCode"
+        android:id="@+id/tvFacultyReportCourseCode"
+        android:layout_alignParentTop="true"  android:layout_width="0dp"
+        android:layout_weight="0.25"
         />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="% Presence"
-        android:id="@+id/textView" />
 
+        android:layout_height="wrap_content"
+
+        android:text="Dates"
+        android:id="@+id/tvFacultyReportAbsentOn"
+        android:layout_width="0dp"
+        android:layout_weight="0.25"
+        />
+
+
+</LinearLayout>
+    <View
+        android:layout_width="match_parent" android:layout_marginTop="10dp" android:layout_marginBottom="5dp"
+        android:layout_height="1dp" android:background="@color/mainColor"
+        />
 </LinearLayout>

@@ -143,6 +143,7 @@ public class HelperMethods
         catch (Exception ex){}
         return formattedDate;
     }
+
     public static Boolean isUserLoggedIn(Context context)
     {
         SharedPreferences sharedPreferences = context.getSharedPreferences(sharedPrefFileName, Context.MODE_PRIVATE);

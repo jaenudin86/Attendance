@@ -100,6 +100,8 @@ public class MainActivity extends ActivityBaseClass
         if(pos==1)
         {
             //setRecurringAlarm(this);
+            Intent newIntent=new Intent(this,FacultyReport.class);
+            startActivity(newIntent);
         }
         if(pos==2)
         {

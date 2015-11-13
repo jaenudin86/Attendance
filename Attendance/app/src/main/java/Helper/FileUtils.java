@@ -5,19 +5,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.NotificationCompatSideChannelService;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.net.URISyntaxException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
 /**
@@ -39,6 +44,40 @@ public class FileUtils
             // Potentially direct the user to the Market with a Dialog
             Toast.makeText(context, "Please install a File Manager.", Toast.LENGTH_SHORT).show();
         }
+    }
+    public static String writeFile(String content,Context context)
+    {
+        String sdcardPath = Environment.getExternalStorageDirectory().getPath();
+        String BASE_DIR = "/AttendanceData/";
+        String DOC_FILE = "attendanceReport.txt";
+        File file = new File(new File(sdcardPath, BASE_DIR), DOC_FILE);
+
+        //String mypath="/storage/emulated/0/attendanceReport.txt";
+        //File file = new File(path, "attendanceReport.txt");
+        //File file = new File(mypath);
+        String returnString="";
+        /*if (file.exists()) {
+            return "Exception: file already exists with same name";
+        }*/
+
+        /**
+         * Make sure the parent directory exists.
+         */
+        File parentFile = file.getParentFile();
+        parentFile.mkdirs();
+        try
+        {
+            FileOutputStream stream = new FileOutputStream(file);
+            stream.write(content.getBytes());
+
+            stream.close();
+            returnString=file.getAbsolutePath();
+        }
+        catch(Exception ex)
+        {
+            returnString="Exception:"+ex.toString();
+        }
+        return returnString;
     }
     public static String readFile(String path,String allowedExtn)
     {
