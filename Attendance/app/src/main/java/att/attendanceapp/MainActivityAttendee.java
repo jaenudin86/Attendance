@@ -1,8 +1,12 @@
 package att.attendanceapp;
 
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.nfc.NfcAdapter;
+import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,18 +34,54 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import DBHelper.TimetableSlot;
+import Helper.DialogUtils;
 import Helper.HelperMethods;
+import Helper.NFCUtils;
 
 public class MainActivityAttendee extends ActivityBaseClass
 {
     TimetableSlot timetableForDay;
     Context context=this;
+    NfcAdapter nfcAdapter;
+    String nfcTagMsg;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity_attendee);
         setListView();
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+
+    }
+    @Override
+    protected void onResume()
+    {
+        Intent intent=new Intent(this,MainActivityAttendee.class);
+        intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
+        PendingIntent pendingIntent=PendingIntent.getActivity(this, 0, intent, 0);
+        IntentFilter[] intentFilter=new IntentFilter[]{};
+        nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFilter, null);
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause()
+    {
+        nfcAdapter.disableForegroundDispatch(this);
+        super.onPause();
+    }
+    @Override
+    protected void onNewIntent(Intent intent)
+    {
+        if(intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED))
+        {
+            Toast.makeText(this, "NFC intent received", Toast.LENGTH_SHORT).show();
+            nfcTagMsg=NFCUtils.read(intent);
+            Toast.makeText(this,nfcTagMsg,Toast.LENGTH_SHORT).show();
+            new GetTimetableForNow().execute();
+            DialogUtils.cancelDialog();
+        }
+        super.onNewIntent(intent);
     }
     void setListView()
     {
@@ -68,7 +108,8 @@ public class MainActivityAttendee extends ActivityBaseClass
         switch(pos)
         {
             case 0:
-                new GetTimetableForNow().execute();
+                DialogUtils.displayInfoDialog(this, "NFC tag scan", "Please scan the NFC tag");
+
                 break;
             case 1:
                 break;
@@ -88,7 +129,7 @@ public class MainActivityAttendee extends ActivityBaseClass
 
             try
             {
-                URL url = new URL(url_select);
+
                 String keys[]={"user_id","date","time"};
 
                 Calendar dateCalendar = Calendar.getInstance();
@@ -100,7 +141,7 @@ public class MainActivityAttendee extends ActivityBaseClass
                 SimpleDateFormat sdfTime = new SimpleDateFormat(format, Locale.US);
                 String time = sdfTime.format(dateCalendar.getTime());
 
-                String values[]={"mithumahek@gmail.com",date,time};
+                String values[]={HelperMethods.getCurrentLoggedinUser(MainActivityAttendee.this),date,time};
                 response=HelperMethods.getResponse(url_select,keys,values);
 
                 if(response.equals("null") || response==null)
@@ -135,7 +176,10 @@ public class MainActivityAttendee extends ActivityBaseClass
                 }
                 else
                 {
-                    final Dialog dialog = new Dialog(context);
+                    // nfctag="attendanceId:1,number:1234"
+                    String code=nfcTagMsg.split(",")[1].split(":")[1];
+                    new SubmitAttendance().execute(HelperMethods.getCurrentLoggedinUser(MainActivityAttendee.this),timetableForDay.getId(),code);
+                    /*final Dialog dialog = new Dialog(context);
                     dialog.setTitle("Enter code:");
                     LinearLayout inflatedView = (LinearLayout) View.inflate(MainActivityAttendee.this, R.layout.fill_code_popup, null);
                     dialog.setContentView(inflatedView);
@@ -146,12 +190,12 @@ public class MainActivityAttendee extends ActivityBaseClass
                         @Override
                         public void onClick(View v)
                         {
-                            new SubmitAttendance().execute("mithumahek@gmail.com",timetableForDay.getId(),code.getText().toString());
+                            new SubmitAttendance().execute(HelperMethods.getCurrentLoggedinUser(MainActivityAttendee.this),timetableForDay.getId(),code.getText().toString());
                             dialog.dismiss();
                         }
                     });
 
-                    dialog.show();
+                    dialog.show();*/
                 }
             }
             else
@@ -187,7 +231,6 @@ public class MainActivityAttendee extends ActivityBaseClass
                 else
                     Toast.makeText(MainActivityAttendee.this,"Attendance submitted",Toast.LENGTH_LONG).show();
             }
-            finish();
         }
     }
 }

@@ -48,7 +48,7 @@ public class ManageHolidays extends ActivityBaseClass
     }
     void setupListView()
     {
-        new GetHolidays().execute("rujoota.shah@gmail.com");
+        new GetHolidays().execute(HelperMethods.getCurrentLoggedinUser(this));
     }
 
     void changeIntent(int pos)

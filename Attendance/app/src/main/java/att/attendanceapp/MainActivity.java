@@ -52,8 +52,8 @@ public class MainActivity extends ActivityBaseClass
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setListView();
-        HelperMethods.putSharedPref(this, getString(R.string.isLoggedIn_sharedPref_string), "yes");
-        HelperMethods.putSharedPref(this, getString(R.string.loggedInUser_sharedPref_string), "rujoota.shah@gmail.com");
+        /*HelperMethods.putSharedPref(this, getString(R.string.isLoggedIn_sharedPref_string), "yes");
+        HelperMethods.putSharedPref(this, getString(R.string.loggedInUser_sharedPref_string), "rujoota.shah@gmail.com");*/
     }
     void setListView()
     {

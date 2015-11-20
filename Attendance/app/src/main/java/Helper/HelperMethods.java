@@ -3,7 +3,9 @@ package Helper;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.nfc.Tag;
+import android.text.TextUtils;
 import android.util.Log;
+import android.widget.EditText;
 
 
 import java.io.BufferedReader;
@@ -31,7 +33,7 @@ import att.attendanceapp.R;
 public class HelperMethods
 {
     static String sharedPrefFileName="userInfo";
-    static String TAG="ATTENDANCEHELPER";
+    public static String TAG="ATTENDANCE";
 
     public static String getResponse(String serviceUrl,String[] keys, String[] values)
     {
@@ -143,7 +145,14 @@ public class HelperMethods
         catch (Exception ex){}
         return formattedDate;
     }
-
+    public static boolean isEmpty(EditText target)
+    {
+        String txt=target.getText().toString().trim();
+        return TextUtils.isEmpty(txt);
+    }
+    public static boolean isValidEmail(CharSequence target) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+    }
     public static Boolean isUserLoggedIn(Context context)
     {
         SharedPreferences sharedPreferences = context.getSharedPreferences(sharedPrefFileName, Context.MODE_PRIVATE);
@@ -152,6 +161,13 @@ public class HelperMethods
             return true;
         else
             return false;
+    }
+    public static void removeAllSharedPref(Context context)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(sharedPrefFileName, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.commit();
     }
     public static void removeSharedPref(Context context,String key)
     {
@@ -171,6 +187,16 @@ public class HelperMethods
         SharedPreferences sharedPreferences = context.getSharedPreferences(sharedPrefFileName, Context.MODE_PRIVATE);
         String user = sharedPreferences.getString(context.getString(R.string.loggedInUser_sharedPref_string), "");
         return user;
+    }
+    public static String getCurrentLoggedinUserType(Context context)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(sharedPrefFileName, Context.MODE_PRIVATE);
+        String user = sharedPreferences.getString(context.getString(R.string.userType_sharedPref_string), "");
+        return user;
+    }
+    public static void signout(Context context)
+    {
+        removeAllSharedPref(context);
     }
     public static void putSharedPref(Context context,String key,String value)
     {

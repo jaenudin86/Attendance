@@ -51,7 +51,7 @@ public class ViewTimetableAttendee extends ActivityBaseClass
         recyclerView.setHasFixedSize(true);
         recyclerLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(recyclerLayoutManager);
-        attendee= "mithumahek@gmail.com";
+        attendee= HelperMethods.getCurrentLoggedinUser(this);
 
         new GetAttendeesForThisCourse().execute("2015-10-07");
     }
@@ -78,7 +78,7 @@ public class ViewTimetableAttendee extends ActivityBaseClass
             try
             {
                 String keys[] = {"user_id", "course_code"};
-                String values[] = {"mithumahek@gmail.com", params[0]};
+                String values[] = {HelperMethods.getCurrentLoggedinUser(ViewTimetableAttendee.this), params[0]};
                 response = HelperMethods.getResponse(url_select, keys, values);
                 if (!response.isEmpty() && !response.equals("null"))
                 {

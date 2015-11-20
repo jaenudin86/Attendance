@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import Helper.HelperMethods;
+
 /**
  * Base class for all common functionalities of activities
  * Created by rujoota on 24-09-2015.
@@ -35,16 +37,16 @@ public class ActivityBaseClass extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_attendee)
-        {
-            Intent intent=new Intent(this,MainActivityAttendee.class);
-            startActivity(intent);
-            return true;
-        }
         if (id == R.id.action_home)
         {
             Intent intent=new Intent(this,MainActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.action_signout)
+        {
+            HelperMethods.signout(this);
+            Intent intent=new Intent(this,LoginUser.class);
             startActivity(intent);
             return true;
         }

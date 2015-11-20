@@ -7,4 +7,5 @@
     <dimen name="days_margin">15dp</dimen>
     <dimen name="timetable_btn_width">40dp</dimen>
     <dimen name="timetable_btn_height">40dp</dimen>
+    <dimen name="textbox_size">300dp</dimen>
 </resources>

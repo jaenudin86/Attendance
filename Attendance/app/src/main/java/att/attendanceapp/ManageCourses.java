@@ -25,6 +25,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import DBHelper.Course;
+import Helper.HelperMethods;
 
 
 import com.google.gson.Gson;
@@ -47,7 +48,7 @@ public class ManageCourses extends ActivityBaseClass
     }
     void setupListView()
     {
-        new GetCourses().execute("rujoota.shah@gmail.com");
+        new GetCourses().execute(HelperMethods.getCurrentLoggedinUser(this));
     }
     public void onAddCourseClick(View view)
     {

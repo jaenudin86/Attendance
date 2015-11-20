@@ -3,10 +3,14 @@ package att.attendanceapp;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.nfc.NfcAdapter;
+import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,7 +57,9 @@ import DBHelper.Course;
 import DBHelper.Holiday;
 import DBHelper.Timetable;
 import Helper.AdapterInterface;
+import Helper.DialogUtils;
 import Helper.HelperMethods;
+import Helper.NFCUtils;
 
 public class FillAttendanceByFaculty extends ActivityBaseClass
 {
@@ -63,7 +69,7 @@ public class FillAttendanceByFaculty extends ActivityBaseClass
     ArrayList<Attendee> attendeeList=new ArrayList<Attendee>();
     String courseCode="";
     String attendanceId="";
-
+    NfcAdapter nfcAdapter;
     FillAttendanceAdapter adapter;
     CheckBox allPresent;
     TextView tvCourseCode,tvCourseTimings,tvCourseDate;
@@ -92,8 +98,42 @@ public class FillAttendanceByFaculty extends ActivityBaseClass
         recyclerLayoutManager = new LinearLayoutManager(this);
         attendeesView.setLayoutManager(recyclerLayoutManager);
         allPresent=(CheckBox)findViewById(R.id.chkFillAttendanceAllPresent);
-
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         new GetAttendeesForThisCourse().execute(courseCode);
+        DialogUtils.displayInfoDialog(this, "NFC tag scan", "Please scan the NFC tag");
+    }
+    @Override
+    protected void onResume()
+    {
+        Intent intent=new Intent(this,FillAttendanceByFaculty.class);
+        intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
+        PendingIntent pendingIntent=PendingIntent.getActivity(this, 0, intent, 0);
+        IntentFilter[] intentFilter=new IntentFilter[]{};
+        nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFilter, null);
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause()
+    {
+        nfcAdapter.disableForegroundDispatch(this);
+        super.onPause();
+    }
+    @Override
+    protected void onNewIntent(Intent intent)
+    {
+        if(intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED))
+        {
+            Toast.makeText(this, "NFC intent received", Toast.LENGTH_SHORT).show();
+            Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            int randomNumber=HelperMethods.generateRandom(1000,9999);
+            new UpdateRandomCode().execute(attendanceId, String.valueOf(randomNumber));
+            new UpdateAttendance().execute(attendanceId);
+            String msg=NFCUtils.write("attendanceId:"+attendanceId+",number:"+randomNumber, tag,this);
+            Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
+            DialogUtils.cancelDialog();
+        }
+        super.onNewIntent(intent);
     }
     public void refreshClick(View view)
     {
@@ -319,7 +359,7 @@ public class FillAttendanceByFaculty extends ActivityBaseClass
             finish();
         }
     }
-
+    // this class is used for updating temporary table
     class UpdateAttendance extends AsyncTask<String, String, Void>
     {
         //private ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
