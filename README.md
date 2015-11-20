@@ -112,3 +112,17 @@ Multiple data writing in NFC tag
 
 Problems:
 Understanding how NFC works
+
+Journal entry for 19th Nov, 2015
+What I have done:
+Tried NFC tag with custom mime type
+Implemented login
+Integrated NFC in attendance app
+
+Plans for next week:
+Custom mime type
+New user signup
+Adding intent-filters so that activity dynamically pops up correct activity when tag is scanned based on current logged in user.
+
+Problems:
+Custom mime type always throws errors
