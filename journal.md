@@ -19,7 +19,6 @@ Plans for next week:
 
 Problems: 
 * geny motion not working: solution- genymotion plugin for android studio 
-
 * calendar picker not in-built in android, need to figure out way to do time and date picker.
 
 ### Journal entry for 1st Oct, 2015 
