@@ -121,3 +121,17 @@ Plans for next week:
 
 Problems: 
 * Custom mime type always throws errors
+
+### Journal entry for 25th Nov, 2015 
+What I have done: 
+* Tried NFC tag with custom mime type
+* Alarm manager for notification
+
+Plans for next week: 
+* Code cleanup and commenting
+* Replacing listview with recyclerview
+* Finding bugs
+
+Problems: 
+* Custom mime type integration with app
+* Notification management too complicated to implement
