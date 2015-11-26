@@ -1,8 +1,12 @@
 package att.attendanceapp;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.nfc.NfcAdapter;
+import android.nfc.NfcManager;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,6 +40,22 @@ public class LoginUser extends ActivityBaseClass
             if(userType.equals("facilitator"))
             {
                 intent=new Intent(LoginUser.this,MainActivity.class);
+
+                /*BroadcastReceiver detachReceiver = new BroadcastReceiver() {
+                    public void onReceive(Context context, Intent intent) {
+                        if(intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED))
+                        {
+
+                        }
+                    }
+                };*/
+                /*IntentFilter filter = new IntentFilter();
+                filter.addAction("android.nfc.action.NDEF_DISCOVERED");
+                filter.addCategory("android.intent.category.DEFAULT");
+                NFCBroadcastReciever reciever = new NFCBroadcastReciever(this);
+
+                this.registerReceiver(reciever, filter);*/
+
                 startActivity(intent);
                 finish();
             }

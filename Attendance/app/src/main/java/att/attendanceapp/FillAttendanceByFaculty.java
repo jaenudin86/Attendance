@@ -73,6 +73,7 @@ public class FillAttendanceByFaculty extends ActivityBaseClass
     FillAttendanceAdapter adapter;
     CheckBox allPresent;
     TextView tvCourseCode,tvCourseTimings,tvCourseDate;
+    private PendingIntent mNfcPendingIntent;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -102,34 +103,51 @@ public class FillAttendanceByFaculty extends ActivityBaseClass
         new GetAttendeesForThisCourse().execute(courseCode);
         DialogUtils.displayInfoDialog(this, "NFC tag scan", "Please scan the NFC tag");
     }
+    private void enableTagWriteMode() {
+
+        mNfcPendingIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, FillAttendanceByFaculty.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
+        IntentFilter[] mWriteTagFilters = new IntentFilter[] { tagDetected };
+        nfcAdapter.enableForegroundDispatch(this, mNfcPendingIntent, mWriteTagFilters, null);
+    }
+
+    private void disableTagWriteMode() {
+
+        nfcAdapter.disableForegroundDispatch(this);
+    }
     @Override
     protected void onResume()
     {
-        Intent intent=new Intent(this,FillAttendanceByFaculty.class);
+        /*Intent intent=new Intent(this,FillAttendanceByFaculty.class);
         intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
         PendingIntent pendingIntent=PendingIntent.getActivity(this, 0, intent, 0);
         IntentFilter[] intentFilter=new IntentFilter[]{};
-        nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFilter, null);
+        nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFilter, null);*/
+        enableTagWriteMode();
         super.onResume();
     }
 
     @Override
     protected void onPause()
     {
-        nfcAdapter.disableForegroundDispatch(this);
+        disableTagWriteMode();
+        //nfcAdapter.disableForegroundDispatch(this);
         super.onPause();
     }
     @Override
     protected void onNewIntent(Intent intent)
     {
-        if(intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED))
+        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction()))
+        //if(intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED))
         {
             Toast.makeText(this, "NFC intent received", Toast.LENGTH_SHORT).show();
             Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             int randomNumber=HelperMethods.generateRandom(1000,9999);
             new UpdateRandomCode().execute(attendanceId, String.valueOf(randomNumber));
             new UpdateAttendance().execute(attendanceId);
-            String msg=NFCUtils.write("attendanceId:"+attendanceId+",number:"+randomNumber, tag,this);
+            String msg=NFCUtils.writeCustom(intent, getPackageName(), "attendanceId:" + attendanceId + ",number:" + randomNumber);
+            //String msg=NFCUtils.write("attendanceId:"+attendanceId+",number:"+randomNumber, tag,this);
             Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
             DialogUtils.cancelDialog();
         }

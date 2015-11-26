@@ -1,7 +1,10 @@
 package Helper;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.nfc.FormatException;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -12,6 +15,7 @@ import android.os.Parcelable;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Locale;
 
 /**
@@ -25,7 +29,6 @@ public class NFCUtils
     {
         try
         {
-
             if (nfcAdapter != null && nfcAdapter.isEnabled())
             {
                 return true;
@@ -55,6 +58,26 @@ public class NFCUtils
             return ex.toString();
         }
     }
+    public static String writeCustom(Intent intent,String pkgName,String data)
+    {
+        Tag detectedTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+        String mimeType = "application/vnd." + pkgName;
+        String mimeData = data;
+        NdefRecord record = NdefRecord.createMime(mimeType, mimeData.getBytes());
+        NdefMessage message = new NdefMessage(new NdefRecord[] { record });
+        Ndef ndef = Ndef.get(detectedTag);
+        try {
+            ndef.connect();
+            ndef.writeNdefMessage(message);
+            ndef.close();
+            return "tag written!";
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (FormatException e) {
+            e.printStackTrace();
+        }
+        return "some error";
+    }
     public static String writeNdefMsg(Tag tag,NdefMessage msg)
     {
         try
@@ -79,6 +102,12 @@ public class NFCUtils
         {
             return ex.toString();
         }
+    }
+    public static String readDataCustom(Intent intent)
+    {
+        Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+        NdefRecord relayRecord = ((NdefMessage) rawMsgs[0]).getRecords()[0];
+        return new String(relayRecord.getPayload());
     }
     private static NdefMessage createNdefMsg(String content)
     {
@@ -129,7 +158,7 @@ public class NFCUtils
             return "no records found";
         else {
             NdefRecord record=ndefRecords[0];
-            String content=readText(record);
+            String content=new String(record.getPayload());//readText(record);
             return "Read:"+content;
         }
     }

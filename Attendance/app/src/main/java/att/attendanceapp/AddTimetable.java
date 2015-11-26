@@ -1,7 +1,9 @@
 package att.attendanceapp;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -37,6 +39,7 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import DBHelper.Course;
@@ -378,13 +381,47 @@ public class AddTimetable extends ActivityBaseClass
             {
                 //Toast.makeText(AddTimetable.this,response,Toast.LENGTH_LONG).show();
             }
-
-
             timetable.setId(response);
             Intent intent = getIntent(); //gets the intent that called this intent
             intent.putExtra("newTimetable", timetable);
             setResult(Activity.RESULT_OK, intent);
+            //setAlarm();
+            //cancelAlarm();
             finish();
         }
+    }
+    // for future use, to set notification when time arrives
+    public void setAlarm()
+    {
+        long alerttime=new GregorianCalendar().getTimeInMillis()+5*1000;
+        Intent alertIntent=new Intent(this,AlarmRcvr.class);
+        AlarmManager mgr=(AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        Calendar alarmCal=Calendar.getInstance();
+        // sets alarm every wed, at 2.24am
+        alarmCal.set(Calendar.DAY_OF_WEEK, 4);
+        alarmCal.set(Calendar.HOUR_OF_DAY, 2);
+        alarmCal.set(Calendar.MINUTE,24);
+        alarmCal.set(Calendar.SECOND, 0);
+        alarmCal.set(Calendar.MILLISECOND, 0);
+        mgr.setRepeating(AlarmManager.RTC_WAKEUP,
+                alarmCal.getTimeInMillis(), 1 * 60 * 60 * 1000, PendingIntent.getBroadcast(this, 1, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+    }
+    public void cancelAlarm()
+    {
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+
+        Intent alertIntent=new Intent(this,AlarmRcvr.class);
+        PendingIntent pendingUpdateIntent = PendingIntent.getBroadcast(this, 1, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Cancel alarms
+        try {
+            alarmManager.cancel(pendingUpdateIntent);
+            Toast.makeText(this,"alarm cancelled",Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e)
+        {
+            Log.d("AttendanceHelper",e.toString());
+        }
+
     }
 }

@@ -75,20 +75,7 @@ public class MainActivity extends ActivityBaseClass
                 }
         );
     }
-    private void setRecurringAlarm(Context context)
-    {
-        Calendar updateTime = Calendar.getInstance();
-        updateTime.setTimeZone(TimeZone.getDefault());
-        updateTime.set(Calendar.HOUR_OF_DAY, 16);
-        updateTime.set(Calendar.MINUTE, 20);
 
-        Intent downloader = new Intent(context, Helper.AlarmReceiver.class);
-        downloader.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, downloader, PendingIntent.FLAG_CANCEL_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        // should be AlarmManager.INTERVAL_DAY (but changed to 15min for testing)
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, updateTime.getTimeInMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
-    }
 
 
     void changeIntent(int pos,String itemName)

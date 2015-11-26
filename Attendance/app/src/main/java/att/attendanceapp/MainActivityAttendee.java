@@ -5,9 +5,12 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -44,6 +47,7 @@ public class MainActivityAttendee extends ActivityBaseClass
     Context context=this;
     NfcAdapter nfcAdapter;
     String nfcTagMsg;
+    private PendingIntent mNfcPendingIntent;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -51,23 +55,42 @@ public class MainActivityAttendee extends ActivityBaseClass
         setContentView(R.layout.activity_main_activity_attendee);
         setListView();
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-
+        Intent intent = getIntent();
+        // if user scanned the tag and application is not running
+        if(intent.getType() != null && intent.getType().equals("application/vnd." + getPackageName()))
+        {
+            // if logged in as student
+            if(HelperMethods.getCurrentLoggedinUserType(this).equals("attendee"))
+            {
+                nfcTagMsg = NFCUtils.readDataCustom(intent);
+                Toast.makeText(getApplicationContext(), "read:" + nfcTagMsg, Toast.LENGTH_LONG).show();
+                if (!nfcTagMsg.isEmpty())
+                    new GetTimetableForNow().execute();
+            }
+            else
+            {
+                finish();
+                //HelperMethods.signout(this);
+            }
+        }
     }
     @Override
     protected void onResume()
     {
-        Intent intent=new Intent(this,MainActivityAttendee.class);
+        /*Intent intent=new Intent(this,MainActivityAttendee.class);
         intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
         PendingIntent pendingIntent=PendingIntent.getActivity(this, 0, intent, 0);
         IntentFilter[] intentFilter=new IntentFilter[]{};
-        nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFilter, null);
+        nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFilter, null);*/
+        enableTagWriteMode();
         super.onResume();
     }
 
     @Override
     protected void onPause()
     {
-        nfcAdapter.disableForegroundDispatch(this);
+        disableTagWriteMode();
+        //nfcAdapter.disableForegroundDispatch(this);
         super.onPause();
     }
     @Override
@@ -98,12 +121,12 @@ public class MainActivityAttendee extends ActivityBaseClass
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id)
                     {
                         String itemName = String.valueOf(parent.getItemAtPosition(position));
-                        changeIntent(position, itemName);
+                        changeIntent(position);
                     }
                 }
         );
     }
-    void changeIntent(int pos,String itemName)
+    void changeIntent(int pos)
     {
         switch(pos)
         {
@@ -115,6 +138,18 @@ public class MainActivityAttendee extends ActivityBaseClass
                 break;
 
         }
+    }
+    private void enableTagWriteMode() {
+        mNfcPendingIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, MainActivityAttendee.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
+        IntentFilter[] mWriteTagFilters = new IntentFilter[] { tagDetected };
+        nfcAdapter.enableForegroundDispatch(this, mNfcPendingIntent, mWriteTagFilters, null);
+    }
+
+    private void disableTagWriteMode() {
+
+        nfcAdapter.disableForegroundDispatch(this);
     }
     class GetTimetableForNow extends AsyncTask<String, Void, String>
     {
@@ -177,6 +212,7 @@ public class MainActivityAttendee extends ActivityBaseClass
                 else
                 {
                     // nfctag="attendanceId:1,number:1234"
+
                     String code=nfcTagMsg.split(",")[1].split(":")[1];
                     new SubmitAttendance().execute(HelperMethods.getCurrentLoggedinUser(MainActivityAttendee.this),timetableForDay.getId(),code);
                     /*final Dialog dialog = new Dialog(context);
