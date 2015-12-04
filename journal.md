@@ -135,3 +135,12 @@ Plans for next week:
 Problems: 
 * Custom mime type integration with app
 * Notification management too complicated to implement
+
+### Journal entry for 3rd Dec, 2015 
+What I have done: 
+* New user signup
+* Attendance report for students
+
+Plans for next week: 
+* Code cleanup and commenting
+* Replacing listview with recyclerview
