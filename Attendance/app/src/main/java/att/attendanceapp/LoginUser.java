@@ -55,9 +55,8 @@ public class LoginUser extends ActivityBaseClass
                 NFCBroadcastReciever reciever = new NFCBroadcastReciever(this);
 
                 this.registerReceiver(reciever, filter);*/
-
-                startActivity(intent);
                 finish();
+                startActivity(intent);
             }
             else if(userType.equals("attendee"))
             {

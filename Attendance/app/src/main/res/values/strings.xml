@@ -65,4 +65,5 @@
     <string name="title_activity_login">Login</string>
     <string name="title_activity_new_user_registration">NewUserRegistration</string>
     <string name="title_activity_login_user">LoginUser</string>
+    <string name="title_activity_student_report">StudentReport</string>
 </resources>

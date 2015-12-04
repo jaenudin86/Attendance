@@ -132,9 +132,10 @@ public class MainActivityAttendee extends ActivityBaseClass
         {
             case 0:
                 DialogUtils.displayInfoDialog(this, "NFC tag scan", "Please scan the NFC tag");
-
                 break;
             case 1:
+                Intent intent=new Intent(this,StudentReport.class);
+                startActivity(intent);
                 break;
 
         }
