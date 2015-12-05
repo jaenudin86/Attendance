@@ -1,7 +1,7 @@
 # AttendanceApp
-This app is built in Android which lets facilitator take attendance for students or attendees. Both facilitator and attendees will install this app. Facilitator can set up lectures according to their timetable in their app. Facilitator can generate random code or scan NFC tag and ask students to fill attendance. Students can submit their attendance by either filling the random code or scanning NFC code. Facilitator can view and export the reports about the students.
+This app is built in Android which lets facilitator take attendance for students or attendees. Both facilitator and attendees will install this app. Facilitator can set up lectures according to their timetable in their app. To make the initial setup easy, facilitator can directly import file from their mobile.(Here is the format:https://github.com/rujoota/CSC780_Attendance/blob/master/CSC780_Attendance%20App.pdf) Facilitator can scan NFC tag first which allows some data relavant to current lecture transferred to the tag and then students can fill attendance by just scanning these tags with their mobile. Facilitator can view and export the reports about the students. Students can only view their report.
 
-The MySQL database for this app is hosted at Amazone Cloud. Basic database schema and requirements are here:
+MySQL database for this app is hosted at Amazone Cloud. Data retrieval is done by simple php pages. Basic database schema and requirements are here:
 https://github.com/rujoota/CSC780_Attendance/blob/master/Attendance%20App.docx
 
 You can view initial screen design: https://github.com/rujoota/CSC780_Attendance/blob/master/CSC780_Attendance%20App.pdf
@@ -17,4 +17,4 @@ Some features of Android which this app uses
 * File import-export from phone
 * Common branding and coloring
 * Checkbox drawable state selectors
-* NFC communication
+* NFC communication with custom mime-type
