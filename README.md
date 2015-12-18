@@ -30,5 +30,5 @@ If you want to try this app, you need to do followin data setup:
 * After all attendees are done, facilitator hits refresh button and then saves the attendance.
 * Facilitator can also view past classes in which attendance is not filled by going through My Attendance Calendar and fill that attendance as well.
 * Facilitator can also view and export attendance report for all attendees for all courses, attendees can only view their report.
-* Sample ids for facilitator in which data is already setup - facilitator@gmail.com abcd@123
+* Sample ids for facilitator in which data is already setup - rujoota.shah@gmail.com abcd@123
 * Sample ids for attendees: mithumahek@gmail.com abcd@123
