@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.http.protocol.ResponseServer;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStream;
@@ -150,16 +152,25 @@ public class MyTimetable extends ActivityBaseClass
         {
             String url_select = getString(R.string.serviceURL)+"/getHolidays.php";
             response=getData(url_select,params[0]);
-            Gson gsonHoliday = new Gson();
-            Type typeHoliday = new TypeToken<ArrayList<Holiday>>(){}.getType();
-            holidayArrayList = gsonHoliday.fromJson(response, typeHoliday);
-
+            if(!response.equals("null"))
+            {
+                Gson gsonHoliday = new Gson();
+                Type typeHoliday = new TypeToken<ArrayList<Holiday>>()
+                {
+                }.getType();
+                holidayArrayList = gsonHoliday.fromJson(response, typeHoliday);
+            }
             response="";
             url_select = getString(R.string.serviceURL)+"/getTimetable.php";
             response=getData(url_select,params[0]);
-            Gson gsonTimetable = new Gson();
-            Type typeTimetable = new TypeToken<ArrayList<TimetableSlot>>(){}.getType();
-            timetableSlots = gsonTimetable.fromJson(response, typeTimetable);
+            if(!response.equals("null"))
+            {
+                Gson gsonTimetable = new Gson();
+                Type typeTimetable = new TypeToken<ArrayList<TimetableSlot>>()
+                {
+                }.getType();
+                timetableSlots = gsonTimetable.fromJson(response, typeTimetable);
+            }
             return returnString;
         }
         private String getData(String url_select,String facilitator)
