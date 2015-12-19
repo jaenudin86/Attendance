@@ -26,6 +26,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import DBHelper.Course;
 import DBHelper.Holiday;
 import Helper.HelperMethods;
 
@@ -78,9 +79,18 @@ public class ManageHolidays extends ActivityBaseClass
 
         if (requestCode == ADD_CODE && resultCode == Activity.RESULT_OK)
         {
-            holidayArrayList.add((Holiday) data.getSerializableExtra("newHoliday"));
-            HolidayListAdapter adapter=(HolidayListAdapter)holidayList.getAdapter();
-            adapter.notifyDataSetChanged();
+            if(holidayArrayList==null) // if its first being added
+            {
+                holidayArrayList = new ArrayList<Holiday>();
+                holidayArrayList.add((Holiday) data.getSerializableExtra("newHoliday"));
+                holidayList.setAdapter(new HolidayListAdapter(context, holidayArrayList));
+            }
+            else
+            {
+                holidayArrayList.add((Holiday) data.getSerializableExtra("newHoliday"));
+                HolidayListAdapter adapter = (HolidayListAdapter) holidayList.getAdapter();
+                adapter.notifyDataSetChanged();
+            }
             holidayList.smoothScrollToPosition(holidayArrayList.size()-1);
 
         }

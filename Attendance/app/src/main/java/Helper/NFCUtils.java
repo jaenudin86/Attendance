@@ -76,7 +76,7 @@ public class NFCUtils
         } catch (FormatException e) {
             e.printStackTrace();
         }
-        return "some error";
+        return "IO connection error";
     }
     public static String writeNdefMsg(Tag tag,NdefMessage msg)
     {

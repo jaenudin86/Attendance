@@ -1,6 +1,7 @@
 package att.attendanceapp;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,6 +36,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.security.interfaces.DSAParams;
 import java.util.ArrayList;
 
 import DBHelper.Course;
@@ -117,9 +119,10 @@ public class CourseListAdapter  extends BaseAdapter
                 {
                     public void onClick(DialogInterface dialog, int which)
                     {
+                        new DeleteCourse().execute(obj.getFacilitatorId(), obj.getCourseCode(),Integer.toString(position));
                         Course itemToRemove=courses.get(position);
                         Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_out_right);
-                        animation.setDuration(1000);
+                        animation.setDuration(500);
                         deleteOnAnimationComplete(animation, itemToRemove);
                         row.startAnimation(animation);
                     }
@@ -138,7 +141,7 @@ public class CourseListAdapter  extends BaseAdapter
         if(obj.shouldAnimateOnAdd == true)
         {
             Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
-            animation.setDuration(1000);
+            animation.setDuration(500);
             row.startAnimation(animation);
             obj.shouldAnimateOnAdd =false;
         }
@@ -172,15 +175,16 @@ public class CourseListAdapter  extends BaseAdapter
             {
                 courses.remove(obj);
                 notifyDataSetChanged();
-                new DeleteCourse().execute(obj.getFacilitatorId(), obj.getCourseCode());
             }
         });
     }
     class DeleteCourse extends AsyncTask<String, Void, String>
     {
+
         InputStream is = null;
         int responseCode = 0;
         String returnString="";
+        int position;
         @Override
         protected String doInBackground(String... params)
         {
@@ -201,6 +205,7 @@ public class CourseListAdapter  extends BaseAdapter
                 outputStream.close();
                 responseCode = httpUrlConnection.getResponseCode();
                 httpUrlConnection.disconnect();
+                position=Integer.parseInt(params[2]);
                 returnString="ok";
             }
             catch (Exception ex)
@@ -213,20 +218,31 @@ public class CourseListAdapter  extends BaseAdapter
         protected void onPostExecute(String v)
         {
             super.onPostExecute(v);
+            Course obj=courses.get(position);
             // no exception found on previous call
             if(!v.toLowerCase().contains("exception"))
             {
+
                 // if no data found then
                 if(responseCode==200) // means all ok
                 {
-                    Toast.makeText(context,"Item deleted",Toast.LENGTH_SHORT).show();
+
+
+                    //Toast.makeText(context,"Item deleted",Toast.LENGTH_SHORT).show();
                 }
                 else
-                    Toast.makeText(context,"Some error has occurred",Toast.LENGTH_SHORT).show();
+                {
+                    Toast.makeText(context, "Some error has occurred", Toast.LENGTH_SHORT).show();
+
+                    Log.e("AttendanceApp",v);
+                }
             }
             else
             {
-                Toast.makeText(context,v,Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Some error has occurred", Toast.LENGTH_SHORT).show();
+                Log.e("AttendanceApp", v);
+
+                //Toast.makeText(context,v,Toast.LENGTH_LONG).show();
             }
         }
     }

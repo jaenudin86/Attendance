@@ -76,9 +76,18 @@ public class ManageCourses extends ActivityBaseClass
 
         if (requestCode == ADD_CODE && resultCode == Activity.RESULT_OK)
         {
-            courseArrayList.add((Course) data.getSerializableExtra("newCourse"));
-            CourseListAdapter adapter=(CourseListAdapter)courseList.getAdapter();
-            adapter.notifyDataSetChanged();
+            if(courseArrayList==null) // if its first course being added
+            {
+                courseArrayList = new ArrayList<Course>();
+                courseArrayList.add((Course) data.getSerializableExtra("newCourse"));
+                courseList.setAdapter(new CourseListAdapter(context, courseArrayList));
+            }
+            else
+            {
+                courseArrayList.add((Course) data.getSerializableExtra("newCourse"));
+                CourseListAdapter adapter = (CourseListAdapter) courseList.getAdapter();
+                adapter.notifyDataSetChanged();
+            }
             courseList.smoothScrollToPosition(courseArrayList.size() - 1);
         }
         else if(requestCode == EDIT_CODE && resultCode == Activity.RESULT_OK)

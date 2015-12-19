@@ -61,13 +61,25 @@ public class ManageMySchedule extends ActivityBaseClass
 
         if (requestCode == ADD_CODE && resultCode == Activity.RESULT_OK)
         {
-            Timetable obj=(Timetable) data.getSerializableExtra("newTimetable");
-            //mySchedule.add(obj);
-            recyclerView.smoothScrollToPosition(mySchedule.size());
+            if(mySchedule==null)
+            {
+                mySchedule=new ArrayList<>();
+                Timetable obj=(Timetable) data.getSerializableExtra("newTimetable");
+                mySchedule.add(obj);
+                noData.setVisibility(View.INVISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
+                recyclerAdapter = new MyScheduleRecyclerAdapter(mySchedule,ManageMySchedule.this);
+                recyclerView.setAdapter(recyclerAdapter);
+            }
+            else
+            {
+                Timetable obj = (Timetable) data.getSerializableExtra("newTimetable");
+                //mySchedule.add(obj);
+                recyclerView.smoothScrollToPosition(mySchedule.size());
 
 
-            recyclerAdapter.addNewItem(obj,mySchedule.size());
-
+                recyclerAdapter.addNewItem(obj, mySchedule.size());
+            }
         }
         else if(requestCode == EDIT_CODE && resultCode == Activity.RESULT_OK)
         {
@@ -149,6 +161,7 @@ public class ManageMySchedule extends ActivityBaseClass
                 else
                 {
                     noData.setVisibility(View.INVISIBLE);
+                    recyclerView.setVisibility(View.VISIBLE);
                     try
                     {
                         recyclerAdapter = new MyScheduleRecyclerAdapter(mySchedule,ManageMySchedule.this);

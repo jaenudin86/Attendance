@@ -1,6 +1,7 @@
 package att.attendanceapp;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -47,17 +48,27 @@ public class AddCourse extends ActivityBaseClass
     class CourseTask extends AsyncTask<Course, String, Void>
     {
         //private ProgressDialog progressDialog = new ProgressDialog(AddCourse.this);
+        private ProgressDialog progressDialog;
         String serviceURL;
         InputStream is = null;
         String result = "";
         String response = "";
         Course course;
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog=new ProgressDialog(AddCourse.this);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setTitle("Loading...");
+            progressDialog.setMessage("Please wait");
+            progressDialog.show();
+        }
+        @Override
         protected Void doInBackground(Course... params) {
 
             try
             {
-                course=(Course)params[0];
+                course=params[0];
                 serviceURL=getString(R.string.serviceURL)+"/addCourse.php";
                 URL url = new URL(serviceURL);
                 HttpURLConnection httpUrlConnection=(HttpURLConnection)url.openConnection();
@@ -93,6 +104,9 @@ public class AddCourse extends ActivityBaseClass
             Intent intent = getIntent(); //gets the intent that called this intent
             intent.putExtra("newCourse", course);
             setResult(Activity.RESULT_OK, intent);
+            if (progressDialog!=null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
             finish();
             //Intent intent=new Intent(context,ManageCourses.class);
             //startActivity(intent);

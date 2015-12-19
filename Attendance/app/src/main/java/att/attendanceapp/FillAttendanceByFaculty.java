@@ -142,12 +142,11 @@ public class FillAttendanceByFaculty extends ActivityBaseClass
         //if(intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED))
         {
             Toast.makeText(this, "NFC intent received", Toast.LENGTH_SHORT).show();
-            Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            //Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             int randomNumber=HelperMethods.generateRandom(1000,9999);
             new UpdateRandomCode().execute(attendanceId, String.valueOf(randomNumber));
             new UpdateAttendance().execute(attendanceId);
             String msg=NFCUtils.writeCustom(intent, getPackageName(), "attendanceId:" + attendanceId + ",number:" + randomNumber);
-            //String msg=NFCUtils.write("attendanceId:"+attendanceId+",number:"+randomNumber, tag,this);
             Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
             DialogUtils.cancelDialog();
         }
@@ -206,7 +205,7 @@ public class FillAttendanceByFaculty extends ActivityBaseClass
         String rollnos="";
         for(Attendee att:adapter.absentees)
         {
-            rollnos=att.getEmailId()+",";
+            rollnos+=att.getEmailId()+",";
         }
         if(!rollnos.isEmpty())
             rollnos=rollnos.substring(0,rollnos.length()-1);

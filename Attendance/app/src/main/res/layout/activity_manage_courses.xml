@@ -14,7 +14,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="20dp" android:divider="@color/mainColor" android:dividerHeight="1dp"
-        android:paddingBottom="40dp"
+        android:paddingBottom="90dp"
         />
     <ImageButton
                  android:layout_width="60dp"

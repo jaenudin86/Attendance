@@ -39,9 +39,27 @@ public class ActivityBaseClass extends AppCompatActivity
 
         if (id == R.id.action_home)
         {
-            Intent intent=new Intent(this,MainActivity.class);
-            startActivity(intent);
-            return true;
+            if(HelperMethods.isUserLoggedIn(this))
+            {
+                if (HelperMethods.getCurrentLoggedinUserType(this).equals("facilitator"))
+                {
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
+                else
+                {
+                    Intent intent = new Intent(this, MainActivityAttendee.class);
+                    startActivity(intent);
+                    return true;
+                }
+            }
+            else
+            {
+                Intent intent = new Intent(this, LoginUser.class);
+                startActivity(intent);
+                return true;
+            }
         }
         if (id == R.id.action_signout)
         {
